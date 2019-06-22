@@ -2,11 +2,23 @@
 import * as Font from "expo-font";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 
-
 import React from "react";
 import { FlatList } from "react-native";
+import { iOSColors } from "react-native-typography";
 
-import { Container, Content, Text, Spinner } from "native-base";
+import {
+  Container,
+  Content,
+  Text,
+  Spinner,
+  Header,
+  Left,
+  Title,
+  Right,
+  Body,
+  Button,
+  Icon
+} from "native-base";
 import { subDays, isBefore } from "date-fns";
 import Movement, { IMovement } from "./Movement";
 import Balance, { IBalance } from "./Balance";
@@ -195,6 +207,7 @@ export default class MyApp extends React.PureComponent<{}, IState> {
   }
 
   render() {
+    let bg = iOSColors.red;
     if (this.state.isLoading) {
       return (
         <Container>
@@ -206,7 +219,7 @@ export default class MyApp extends React.PureComponent<{}, IState> {
               alignItems: "center"
             }}
           >
-            <Spinner size={64} color="red" />
+            <Spinner size={64} color={bg} />
             <Text>{this.state.loadingInfo}</Text>
           </Content>
         </Container>
@@ -214,10 +227,22 @@ export default class MyApp extends React.PureComponent<{}, IState> {
     }
 
     return (
-      <Container>
+      <Container style={{ backgroundColor: bg }}>
+        <Header transparent>
+          <Left>
+            <Button transparent>
+              <Icon name="refresh" />
+            </Button>
+          </Left>
+          <Body>
+            <Title style={{ fontFamily: "sans-serif-medium" }}>
+              Cajamar App
+            </Title>
+          </Body>
+        </Header>
         <Content
           contentContainerStyle={{
-            marginTop: 20,
+            marginTop: 10,
             flex: 1,
             padding: 5,
             justifyContent: "center"

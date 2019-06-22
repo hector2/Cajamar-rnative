@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardItem, Body, Text, Icon } from "native-base";
+import { Card, CardItem, Text, Icon } from "native-base";
 import { format } from "date-fns";
 
 interface BalanceProps {
@@ -44,19 +44,19 @@ export default class Balance extends React.PureComponent<BalanceProps, {}> {
         <CardItem>
           <Icon fontSize={32} name="md-thumbs-up" />
           <Text>
-            {"Ingresado: " + this.props.balance.positive.toString() + " euros"}
+            {"Ingresado: " + this.props.balance.positive.toString() + "€"}
           </Text>
         </CardItem>
         <CardItem>
           <Icon fontSize={32} name="md-thumbs-down" />
           <Text>
-            {"Gastado: " + this.props.balance.negative.toString() + " euros"}
+            {"Gastado: " + this.props.balance.negative.toString() + "€"}
           </Text>
         </CardItem>
         <CardItem>
           <Icon fontSize={32} type="FontAwesome" name="balance-scale" />
           <Text style={{ color: totalColor }}>
-            {"Total: " + this.props.balance.total.toString() + " euros"}
+            {"Total: " + this.props.balance.total.toString() + "€"}
           </Text>
         </CardItem>
         <CardItem style={{ flex: 1, justifyContent: "center" }} footer bordered>
