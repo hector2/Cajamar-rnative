@@ -1,34 +1,24 @@
-// At the top of your file
-import * as Font from "expo-font";
-import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
-
-import React from "react";
-import { FlatList } from "react-native";
-import { iOSColors } from "react-native-typography";
-
+import { createAppContainer } from "react-navigation";
+import AppNavigator from "./AppNavigator";
+import React, { Component } from "react";
+import { IMovement } from "./Movement";
+import { IBalance } from "./Balance";
+import { subDays, isBefore } from "date-fns";
 import {
   Container,
   Content,
-  Text,
   Spinner,
-  Header,
+  Text,
   Left,
-  Title,
-  Right,
-  Body,
   Button,
-  Icon
+  Icon,
+  Title,
+  Body,
+  Header
 } from "native-base";
-import { subDays, isBefore } from "date-fns";
-import Movement, { IMovement } from "./Movement";
-import Balance, { IBalance } from "./Balance";
-
-interface IState {
-  isLoading: boolean;
-  loadingInfo: string;
-  movements: IMovement[];
-  balance: IBalance;
-}
+import { iOSColors } from "react-native-typography";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import * as Font from "expo-font";
 
 function IsJsonString(str) {
   try {
@@ -95,23 +85,24 @@ function calculateBalance(coll: IMovement[], from: Date, to: Date): IBalance {
   };
 }
 
-export default class MyApp extends React.PureComponent<{}, IState> {
+interface IState {
+  isLoading: boolean;
+  loadingInfo: string;
+  movements: IMovement[];
+  balance: IBalance;
+}
+
+const AppCont = createAppContainer(AppNavigator);
+export default class App extends Component<{}, IState> {
   constructor(props) {
     super(props);
     this.state = {
-      loadingInfo: "Cargando",
       isLoading: true,
+      loadingInfo: "Cargando",
       movements: [],
-      balance: {
-        total: 0.0,
-        positive: 0.0,
-        negative: 0.0,
-        from: undefined,
-        to: undefined
-      }
+      balance: undefined
     };
   }
-
   async componentDidMount() {
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
@@ -205,9 +196,9 @@ export default class MyApp extends React.PureComponent<{}, IState> {
       console.log(err);
     }
   }
-
   render() {
     let bg = iOSColors.red;
+
     if (this.state.isLoading) {
       return (
         <Container>
@@ -240,22 +231,19 @@ export default class MyApp extends React.PureComponent<{}, IState> {
             </Title>
           </Body>
         </Header>
+
         <Content
           contentContainerStyle={{
             marginTop: 10,
             flex: 1,
-            padding: 5,
             justifyContent: "center"
           }}
         >
-          <Balance balance={this.state.balance} />
-
-          <FlatList<IMovement>
-            data={this.state.movements}
-            renderItem={({ item }) => {
-              return <Movement mov={item} />;
+          <AppCont
+            screenProps={{
+              balance: this.state.balance,
+              movements: this.state.movements
             }}
-            keyExtractor={({ id }, index) => id}
           />
         </Content>
       </Container>
