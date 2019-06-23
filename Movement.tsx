@@ -175,8 +175,8 @@ export default class Movement extends React.PureComponent<MovementProps, {}> {
             borderBottomRightRadius: radius
           }}
         >
-          <Icon fontSize={32} name="md-calendar" style={{ fontColor: "red" }} />
-          <Text style={{ color: "red" }}>
+          <Icon fontSize={32} name="md-calendar" style={{ color: "gray" }} />
+          <Text style={{ color: "gray" }}>
             {format(this.props.mov.date, "DD/MM")}
           </Text>
         </CardItem>

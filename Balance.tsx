@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardItem, Text, Icon } from "native-base";
 import { format } from "date-fns";
+import SvgUri from "react-native-svg-uri";
 
 interface BalanceProps {
   balance: IBalance;
@@ -59,8 +60,14 @@ export default class Balance extends React.PureComponent<BalanceProps, {}> {
             {"Total: " + this.props.balance.total.toString() + "€"}
           </Text>
         </CardItem>
-        <CardItem style={{ flex: 1, justifyContent: "center" }} footer bordered>
-          <Icon fontSize={32} type="FontAwesome5" name="piggy-bank" />
+        <CardItem footer bordered>
+          <SvgUri
+            width="32"
+            height="32"
+            source={{
+              uri: "https://www.svgrepo.com/show/31409/piggy-bank-with-coin.svg"
+            }}
+          />
           <Text style={{ color: totalColor }}>
             {"" + porcentajeAhorro + "%"}
           </Text>
