@@ -8,9 +8,10 @@ import BalanceScreen from "./BalanceScreen";
 import MovementsScreen from "./MovementsScreen";
 import { Icon } from "native-base";
 import React from "react";
-import { iOSColors } from "react-native-typography";
+import { theme } from "./ThemeVariables";
 
-let bg = iOSColors.red;
+
+
 const TabNavigator = createMaterialTopTabNavigator(
   {
     Balance: {
@@ -50,8 +51,8 @@ const TabNavigator = createMaterialTopTabNavigator(
       showIcon: true,
       showLabel: false,
       inactiveTintColor: "black",
-      activeTintColor: bg,
-      indicatorStyle: { borderWidth: 2, borderColor: bg },
+      activeTintColor: theme.color,
+      indicatorStyle: { borderWidth: 2, borderColor: theme.color },
       style: {
         backgroundColor: "white"
       }

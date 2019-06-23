@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardItem, Text, Icon } from "native-base";
 import { format } from "date-fns";
 import SvgUri from "react-native-svg-uri";
+import { theme } from "./ThemeVariables";
 
 interface BalanceProps {
   balance: IBalance;
@@ -29,8 +30,15 @@ export default class Balance extends React.PureComponent<BalanceProps, {}> {
     ).toFixed(2);
 
     return (
-      <Card>
-        <CardItem style={{ flex: 1, justifyContent: "center" }} header bordered>
+      <Card style={{ borderRadius: theme.radiusCard }}>
+        <CardItem
+          header
+          bordered
+          style={{
+            borderTopLeftRadius: theme.radiusCard,
+            borderTopRightRadius: theme.radiusCard
+          }}
+        >
           <Text>Balance total</Text>
         </CardItem>
         <CardItem>
@@ -60,7 +68,14 @@ export default class Balance extends React.PureComponent<BalanceProps, {}> {
             {"Total: " + this.props.balance.total.toString() + "€"}
           </Text>
         </CardItem>
-        <CardItem footer bordered>
+        <CardItem
+          footer
+          bordered
+          style={{
+            borderBottomLeftRadius: theme.radiusCard,
+            borderBottomRightRadius: theme.radiusCard
+          }}
+        >
           <SvgUri
             width="32"
             height="32"

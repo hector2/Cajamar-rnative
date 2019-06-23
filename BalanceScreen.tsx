@@ -6,6 +6,8 @@ import React from "react";
 import { FlatList } from "react-native";
 import { iOSColors } from "react-native-typography";
 
+import {theme} from './ThemeVariables'
+
 import {
   Container,
   Content,
@@ -23,13 +25,13 @@ import Balance from "./Balance";
 
 export default class BalanceScreen extends React.PureComponent {
   constructor(props) {
+    
     super(props);
   }
 
   async componentDidMount() {}
 
   render() {
-    let bg = iOSColors.red;
 
     if (this.props.screenProps.balance && this.props.screenProps.movements) {
       return <Balance balance={this.props.screenProps.balance} />;

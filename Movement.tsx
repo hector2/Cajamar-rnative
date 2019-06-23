@@ -3,6 +3,7 @@ import React from "react";
 import { Card, CardItem, Icon, Right, Text } from "native-base";
 import { Image } from "react-native";
 import { format } from "date-fns";
+import { theme } from "./ThemeVariables";
 
 interface TransactionEntity {
   name: string;
@@ -104,32 +105,21 @@ export default class Movement extends React.PureComponent<MovementProps, {}> {
   }
 
   render() {
-    let iconName = "trending-neutral";
     let color = "yellow";
 
     if (this.props.mov.amount > 0) {
-      iconName = "trending-up";
       color = "green";
     } else if (this.props.mov.amount < 0) {
-      iconName = "trending-down";
       color = "red";
     }
 
-    let radius = 30;
-
-    /*
-    let beautyName = this.props.mov.concept;
-
-    if (this.props.mov.concept.split("******").length == 2) {
-      beautyName = this.props.mov.concept.split("******")[1];
-    }*/
 
     let beautyEntity = resolveTransactionEntity(this.props.mov.concept);
 
     return (
       <Card
         style={{
-          borderRadius: radius,
+          borderRadius: theme.radiusCard,
           flex: 1,
           flexDirection: "row",
           justifyContent: "center",
@@ -144,7 +134,7 @@ export default class Movement extends React.PureComponent<MovementProps, {}> {
             width: 64,
             margin: 10,
 
-            borderRadius: radius,
+            borderRadius: theme.radiusCard,
             borderColor: "black",
             alignSelf: "stretch"
           }}
@@ -171,8 +161,8 @@ export default class Movement extends React.PureComponent<MovementProps, {}> {
           style={{
             flex: 1,
             flexDirection: "row",
-            borderTopRightRadius: radius,
-            borderBottomRightRadius: radius
+            borderTopRightRadius: theme.radiusCard,
+            borderBottomRightRadius: theme.radiusCard
           }}
         >
           <Icon fontSize={32} name="md-calendar" style={{ color: "gray" }} />

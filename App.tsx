@@ -16,9 +16,10 @@ import {
   Body,
   Header
 } from "native-base";
-import { iOSColors } from "react-native-typography";
+
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import * as Font from "expo-font";
+import { theme } from "./ThemeVariables";
 
 function IsJsonString(str) {
   try {
@@ -197,8 +198,6 @@ export default class App extends Component<{}, IState> {
     }
   }
   render() {
-    let bg = iOSColors.red;
-
     if (this.state.isLoading) {
       return (
         <Container>
@@ -210,7 +209,7 @@ export default class App extends Component<{}, IState> {
               alignItems: "center"
             }}
           >
-            <Spinner size={64} color={bg} />
+            <Spinner size={64} color={theme.color} />
             <Text>{this.state.loadingInfo}</Text>
           </Content>
         </Container>
@@ -218,15 +217,17 @@ export default class App extends Component<{}, IState> {
     }
 
     return (
-      <Container style={{ backgroundColor: bg }}>
+      <Container style={{ backgroundColor: "white" }}>
         <Header transparent>
           <Left>
             <Button transparent>
-              <Icon name="refresh" />
+              <Icon style={{ color: theme.color }} name="refresh" />
             </Button>
           </Left>
           <Body>
-            <Title style={{ fontFamily: "sans-serif-medium" }}>
+            <Title
+              style={{ fontFamily: "sans-serif-medium", color: theme.color }}
+            >
               Cajamar App
             </Title>
           </Body>
@@ -234,7 +235,7 @@ export default class App extends Component<{}, IState> {
 
         <Content
           contentContainerStyle={{
-            marginTop: 10,
+            margin: 10,
             flex: 1,
             justifyContent: "center"
           }}
