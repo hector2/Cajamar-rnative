@@ -14,8 +14,7 @@ import {
   Icon,
   Title,
   Body,
-  Header,
-  View
+  Header
 } from "native-base";
 
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
@@ -235,10 +234,6 @@ export default class App extends Component<{}, IState> {
             </Title>
           </Body>
         </Header>
-
-        <View
-          style={{ width: "100%", height: 50, backgroundColor: theme.color }}
-        />
 
         <Content
           contentContainerStyle={{
