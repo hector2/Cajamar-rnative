@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList } from "react-native";
-import Movement, { IMovement } from "./Movement";
+import Movement, { IMovement } from "../components/Movement";
 
 export default class MovementsScreen extends React.PureComponent {
   constructor(props) {

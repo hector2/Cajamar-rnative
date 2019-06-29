@@ -8,7 +8,7 @@ import BalanceScreen from "./BalanceScreen";
 import MovementsScreen from "./MovementsScreen";
 import { Icon } from "native-base";
 import React from "react";
-import { theme } from "./ThemeVariables";
+import { theme } from "../ThemeVariables";
 
 
 

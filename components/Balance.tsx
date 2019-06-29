@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet, Image } from "react-native";
 import { Card, CardItem, Text, Icon, View, Content } from "native-base";
 import { format } from "date-fns";
-import { theme } from "./ThemeVariables";
+import { theme } from "../ThemeVariables";
 
-const happyPiggy = require("./assets/piggy-bank.png");
-const sadPiggy = require("./assets/bankrupt.png");
+const happyPiggy = require("../assets/piggy-bank.png");
+const sadPiggy = require("../assets/bankrupt.png");
 
 interface BalanceProps {
   balance: IBalance;

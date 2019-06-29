@@ -3,7 +3,7 @@ import React from "react";
 import { Card, CardItem, Icon, Right, Text } from "native-base";
 import { Image } from "react-native";
 import { format } from "date-fns";
-import { theme } from "./ThemeVariables";
+import { theme } from "../ThemeVariables";
 
 interface TransactionEntity {
   name: string;
@@ -123,6 +123,7 @@ export default class Movement extends React.PureComponent<MovementProps, {}> {
 
     return (
       <Card
+        transparent={true}
         style={{
           borderRadius: theme.radiusCard,
           flex: 1,

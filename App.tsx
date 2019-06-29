@@ -1,8 +1,8 @@
 import { createAppContainer } from "react-navigation";
-import AppNavigator from "./AppNavigator";
+import AppNavigator from "./navigation/AppNavigator";
 import React, { Component } from "react";
-import { IMovement } from "./Movement";
-import { IBalance } from "./Balance";
+import { IMovement } from "./components/Movement";
+import { IBalance } from "./components/Balance";
 import { subDays, isBefore } from "date-fns";
 import {
   Container,
@@ -218,16 +218,18 @@ export default class App extends Component<{}, IState> {
 
     return (
       <Container style={{ backgroundColor: "white" }}>
-        <Header transparent>
+        <Header
+          androidStatusBarColor={theme.color}
+          rounded={true}
+          style={{ backgroundColor: theme.color }}
+        >
           <Left>
             <Button transparent>
-              <Icon style={{ color: theme.color }} name="refresh" />
+              <Icon style={{ color: "white" }} name="menu" />
             </Button>
           </Left>
           <Body>
-            <Title
-              style={{ fontFamily: "sans-serif-medium", color: theme.color }}
-            >
+            <Title style={{ fontFamily: "sans-serif-medium", color: "white" }}>
               Cajamar App
             </Title>
           </Body>

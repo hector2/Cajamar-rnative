@@ -6,7 +6,7 @@ import React from "react";
 import { FlatList } from "react-native";
 import { iOSColors } from "react-native-typography";
 
-import {theme} from './ThemeVariables'
+import {theme} from '../ThemeVariables'
 
 import {
   Container,
@@ -20,8 +20,8 @@ import {
   Button,
   Icon
 } from "native-base";
-import Movement, { IMovement } from "./Movement";
-import Balance from "./Balance";
+import Movement, { IMovement } from "../components/Movement";
+import Balance from "../components/Balance";
 
 export default class BalanceScreen extends React.PureComponent {
   constructor(props) {
