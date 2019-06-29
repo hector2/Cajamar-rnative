@@ -70,6 +70,12 @@ const namesResolver: TransactionEntity[] = [
     uri:
       "http://revistalatribuna.com/wp-content/uploads/2018/10/transferencia.jpg",
     beautyName: "Transferencia"
+  },
+  {
+    name: "COMERCIO",
+    uri:
+      "https://png.pngtree.com/png_detail/18/09/10/pngtree-red-shopping-cart-png-clipart_739601.jpg",
+    beautyName: "Compras en comercios"
   }
 ];
 
@@ -112,7 +118,6 @@ export default class Movement extends React.PureComponent<MovementProps, {}> {
     } else if (this.props.mov.amount < 0) {
       color = "red";
     }
-
 
     let beautyEntity = resolveTransactionEntity(this.props.mov.concept);
 
