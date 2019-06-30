@@ -1,6 +1,7 @@
 import {
   createAppContainer,
-  createMaterialTopTabNavigator
+  createMaterialTopTabNavigator,
+  createStackNavigator
 } from "react-navigation";
 
 import BalanceScreen from "./BalanceScreen";
@@ -9,8 +10,7 @@ import MovementsScreen from "./MovementsScreen";
 import { Icon } from "native-base";
 import React from "react";
 import { theme } from "../ThemeVariables";
-
-
+import LoadingScreen from "./LoadingScreen";
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
@@ -60,4 +60,9 @@ const TabNavigator = createMaterialTopTabNavigator(
   }
 );
 
-export default createAppContainer(TabNavigator);
+const RootStack = createStackNavigator(
+  { Loading: LoadingScreen, Loaded: TabNavigator },
+  { initialRouteName: "Loading", headerMode: "none" }
+);
+
+export default createAppContainer(RootStack);

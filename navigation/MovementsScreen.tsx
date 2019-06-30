@@ -10,10 +10,14 @@ export default class MovementsScreen extends React.PureComponent {
   async componentDidMount() {}
 
   render() {
-    if (this.props.screenProps.balance && this.props.screenProps.movements) {
+    const { navigation } = this.props;
+    const balance = navigation.getParam("balance", undefined);
+    const movements = navigation.getParam("movements", undefined);
+
+    if (balance && movements) {
       return (
         <FlatList<IMovement>
-          data={this.props.screenProps.movements}
+          data={movements}
           renderItem={({ item }) => {
             return <Movement mov={item} />;
           }}
