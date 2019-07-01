@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Spinner, Text } from "native-base";
-import { theme } from "../ThemeVariables";
 import { IMovement } from "../components/Movement";
 import { IBalance } from "../components/Balance";
 import { subDays, isBefore } from "date-fns";
+import { View } from "react-native";
+import { ActivityIndicator, Text } from "react-native-paper";
 
 function IsJsonString(str) {
   try {
@@ -183,7 +183,7 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Spinner size={64} color={theme.color} />
+        <ActivityIndicator animating={true} size={64} />
         <Text>{this.state.loadingInfo}</Text>
       </View>
     );

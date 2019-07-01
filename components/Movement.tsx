@@ -1,9 +1,10 @@
 import React from "react";
 
-import { Card, CardItem, Icon, Right, Text } from "native-base";
-import { Image } from "react-native";
+import { Image, View } from "react-native";
 import { format } from "date-fns";
 import { theme } from "../ThemeVariables";
+import { Text, Surface, withTheme } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface TransactionEntity {
   name: string;
@@ -105,12 +106,13 @@ function resolveTransactionEntity(st: string) {
   };
 }
 
-export default class Movement extends React.PureComponent<MovementProps, {}> {
+class Movement extends React.PureComponent<MovementProps, {}> {
   constructor(props) {
     super(props);
   }
 
   render() {
+    const { colors, roundness } = this.props.theme;
     let color = "yellow";
 
     if (this.props.mov.amount > 0) {
@@ -122,14 +124,16 @@ export default class Movement extends React.PureComponent<MovementProps, {}> {
     let beautyEntity = resolveTransactionEntity(this.props.mov.concept);
 
     return (
-      <Card
-        transparent={true}
+      <Surface
         style={{
-          borderRadius: theme.radiusCard,
           flex: 1,
           flexDirection: "row",
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
+          borderRadius: roundness,
+          elevation: 5,
+          margin: 5,
+          padding: 5
         }}
       >
         <Image
@@ -140,13 +144,13 @@ export default class Movement extends React.PureComponent<MovementProps, {}> {
             width: 64,
             margin: 10,
 
-            borderRadius: theme.radiusCard,
+            borderRadius: roundness,
             borderColor: "black",
             alignSelf: "stretch"
           }}
         />
 
-        <CardItem
+        <View
           style={{
             flex: 1,
             flexDirection: "column"
@@ -160,23 +164,29 @@ export default class Movement extends React.PureComponent<MovementProps, {}> {
           <Text style={{ color: color, fontWeight: "bold" }}>
             {this.props.mov.amount.toString() + "€"}
           </Text>
-        </CardItem>
+        </View>
 
-        <CardItem
-          footer
+        <View
           style={{
             flex: 1,
             flexDirection: "row",
-            borderTopRightRadius: theme.radiusCard,
-            borderBottomRightRadius: theme.radiusCard
+            alignItems: "center",
+            borderTopRightRadius: roundness,
+            borderBottomRightRadius: roundness
           }}
         >
-          <Icon fontSize={32} name="md-calendar" style={{ color: "gray" }} />
+          <MaterialCommunityIcons
+            size={32}
+            style={{ color: "gray" }}
+            name="calendar"
+          />
           <Text style={{ color: "gray" }}>
             {format(this.props.mov.date, "DD/MM")}
           </Text>
-        </CardItem>
-      </Card>
+        </View>
+      </Surface>
     );
   }
 }
+
+export default withTheme(Movement);

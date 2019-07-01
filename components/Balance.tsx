@@ -1,18 +1,24 @@
 import React from "react";
-import { StyleSheet, Image } from "react-native";
-import { Card, CardItem, Text, Icon, View, Content } from "native-base";
-import { format } from "date-fns";
-import { theme } from "../ThemeVariables";
+import { StyleSheet, Image, View } from "react-native";
 
-const happyPiggy = require("../assets/piggy-bank.png");
-const sadPiggy = require("../assets/bankrupt.png");
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+import { theme } from "../ThemeVariables";
+import {
+  Card,
+  Text,
+  Title,
+  Paragraph,
+  Surface,
+  Headline,
+  withTheme
+} from "react-native-paper";
+import { format } from "date-fns";
+import { ScrollView } from "react-native-gesture-handler";
+import ResultadoBalance from "./ResultadoBalance";
 
 interface BalanceProps {
   balance: IBalance;
-}
-
-interface ResultadoBalanceProps {
-  ahorro: string;
 }
 
 export interface IBalance {
@@ -24,70 +30,22 @@ export interface IBalance {
 }
 
 const styles = StyleSheet.create({
-  centered: {
+  cardRow: {
     flex: 1,
-    justifyContent: "center"
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    padding: 8
   }
 });
 
-class ResultadoBalance extends React.PureComponent<ResultadoBalanceProps, {}> {
+class Balance extends React.PureComponent<BalanceProps, {}> {
   constructor(props) {
     super(props);
   }
 
   render() {
-    let resImage = happyPiggy;
-    let message =
-      "¡Genial! Has conseguido ahorrar un " +
-      this.props.ahorro +
-      "% de tus ingresos.";
-
-    if (parseFloat(this.props.ahorro) < 30) {
-      resImage = sadPiggy;
-      message =
-        "Pffff estás más pelado que el sobaco de una muñeca. Llevas ahorrado un " +
-        this.props.ahorro +
-        "% de tus ingresos.";
-    }
-
-    return (
-      <Card
-        style={{
-          borderRadius: theme.radiusCard,
-          backgroundColor: theme.color,
-          flex: 1,
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center"
-        }}
-      >
-        <Image
-          resizeMode="contain"
-          source={resImage}
-          style={{
-            height: 200,
-            width: 200,
-            margin: 10,
-            borderRadius: theme.radiusCard
-          }}
-        />
-        <Text
-          uppercase
-          style={{ color: "white", textAlign: "center", margin: 10 }}
-        >
-          {message}
-        </Text>
-      </Card>
-    );
-  }
-}
-
-export default class Balance extends React.PureComponent<BalanceProps, {}> {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+    const { colors, roundness } = this.props.theme;
     let totalColor = this.props.balance.total > 0 ? "green" : "red";
 
     let porcentajeAhorro = (
@@ -96,67 +54,88 @@ export default class Balance extends React.PureComponent<BalanceProps, {}> {
     ).toFixed(2);
 
     return (
-      <Content>
-        <Card
+      <ScrollView
+        style={{
+          flex: 1,
+          flexDirection: "column",
+          padding: 30
+        }}
+      >
+        <Surface
           style={{
-            borderRadius: theme.radiusCard
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            backgroundColor: colors.primary,
+            borderRadius: roundness,
+            elevation: 5,
+            margin: 5
           }}
         >
-          <CardItem
-            header
-            bordered
-            style={[
-              {
-                borderTopLeftRadius: theme.radiusCard,
-                borderTopRightRadius: theme.radiusCard,
-                backgroundColor: theme.color
-              },
-              styles.centered
-            ]}
+          <View
+            style={{
+              flex: 1,
+              borderTopLeftRadius: roundness,
+              borderTopRightRadius: roundness,
+              flexDirection: "row",
+              justifyContent: "center",
+              backgroundColor: colors.primary
+            }}
           >
-            <Text style={{ color: "white", textAlign: "center" }}>
-              Balance total
-            </Text>
-          </CardItem>
-          <CardItem>
-            <Icon fontSize={32} name="md-calendar" />
-            <Text>
-              {"" +
-                format(this.props.balance.from, "DD/MM/YYYY") +
-                " a " +
-                format(this.props.balance.to, "DD/MM/YYYY")}
-            </Text>
-          </CardItem>
-          <CardItem>
-            <Icon fontSize={32} name="md-thumbs-up" />
-            <Text>
-              {"Ingresado: " + this.props.balance.positive.toString() + "€"}
-            </Text>
-          </CardItem>
-          <CardItem>
-            <Icon fontSize={32} name="md-thumbs-down" />
-            <Text>
-              {"Gastado: " + this.props.balance.negative.toString() + "€"}
-            </Text>
-          </CardItem>
-          <CardItem
-            footer
-            style={[
-              {
-                borderBottomLeftRadius: theme.radiusCard,
-                borderBottomRightRadius: theme.radiusCard,
-                marginBottom: 10
-              }
-            ]}
+            <Headline style={{ color: "white" }}>Balance total</Headline>
+          </View>
+
+          <View
+            style={{
+              backgroundColor: "white",
+              borderRadius: roundness,
+              padding: 10
+            }}
           >
-            <Icon fontSize={32} type="FontAwesome" name="balance-scale" />
-            <Text style={{ color: totalColor }}>
-              {"Total: " + this.props.balance.total.toString() + "€"}
-            </Text>
-          </CardItem>
-        </Card>
+            <View
+              style={[
+                styles.cardRow,
+                {
+                  borderRadius: roundness
+                }
+              ]}
+            >
+              <MaterialCommunityIcons size={24} name="calendar" />
+              <Text>
+                {"" +
+                  format(this.props.balance.from, "DD/MM/YYYY") +
+                  " a " +
+                  format(this.props.balance.to, "DD/MM/YYYY")}
+              </Text>
+            </View>
+
+            <View style={[styles.cardRow]}>
+              <MaterialCommunityIcons size={24} name="thumb-up" />
+              <Text>
+                {"Ingresado: " + this.props.balance.positive.toString() + "€"}
+              </Text>
+            </View>
+
+            <View style={[styles.cardRow]}>
+              <MaterialCommunityIcons size={24} name="thumb-down" />
+              <Text>
+                {"Gastado: " + this.props.balance.negative.toString() + "€"}
+              </Text>
+            </View>
+
+            <View style={[styles.cardRow]}>
+              <MaterialCommunityIcons size={24} name="scale-balance" />
+              <Text style={{ color: totalColor }}>
+                {"Total: " + this.props.balance.total.toString() + "€"}
+              </Text>
+            </View>
+          </View>
+        </Surface>
+
         <ResultadoBalance ahorro={porcentajeAhorro} />
-      </Content>
+      </ScrollView>
     );
   }
 }
+
+export default withTheme(Balance);
