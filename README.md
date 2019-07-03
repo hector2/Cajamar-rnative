@@ -5,3 +5,4 @@ TO-DO
 - [ ] Ajustar fechadesde y fechaHasta.
 - [ ] Ajustes para poder cambiar lo de modo demo o no.
 - [ ] Creds para que se puedan usar con cuentas de Cajamar.
+- [ ] AWS Amplify para persistencia.
