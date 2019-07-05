@@ -3,6 +3,9 @@ import { FlatList } from "react-native";
 import Movement, { IMovement } from "../components/Movement";
 
 export default class MovementsScreen extends React.PureComponent {
+  static navigationOptions = {
+    title: "Movimientos"
+  };
   constructor(props) {
     super(props);
   }

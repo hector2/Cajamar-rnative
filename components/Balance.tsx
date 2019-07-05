@@ -55,10 +55,13 @@ class Balance extends React.PureComponent<BalanceProps, {}> {
 
     return (
       <ScrollView
+        contentContainerStyle={{
+          paddingVertical: 10,
+          paddingHorizontal: 10
+        }}
         style={{
           flex: 1,
-          flexDirection: "column",
-          padding: 30
+          flexDirection: "column"
         }}
       >
         <Surface

@@ -1,6 +1,7 @@
 import { iOSColors } from "react-native-typography";
+import { DefaultTheme } from "react-native-paper";
 
 export const theme = {
-  color: iOSColors.orange,
+  primary: iOSColors.orange,
   radiusCard: 20
 };

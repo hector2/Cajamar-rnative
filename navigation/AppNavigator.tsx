@@ -12,6 +12,7 @@ import MovementsScreen from "./MovementsScreen";
 
 import React from "react";
 import { theme } from "../ThemeVariables";
+
 import LoadingScreen from "./LoadingScreen";
 
 const TabNavigator = createMaterialTopTabNavigator(
@@ -55,8 +56,11 @@ const TabNavigator = createMaterialTopTabNavigator(
       showIcon: true,
       showLabel: false,
       inactiveTintColor: "black",
-      activeTintColor: theme.color,
-      indicatorStyle: { borderWidth: 2, borderColor: theme.color },
+      activeTintColor: theme.primary,
+      indicatorStyle: {
+        borderWidth: 2,
+        borderColor: theme.primary
+      },
       style: {
         backgroundColor: "white"
       }
@@ -66,7 +70,20 @@ const TabNavigator = createMaterialTopTabNavigator(
 
 const RootStack = createStackNavigator(
   { Loading: LoadingScreen, Loaded: TabNavigator },
-  { initialRouteName: "Loading", headerMode: "none" }
+  {
+    initialRouteName: "Loading",
+    defaultNavigationOptions: {
+      headerTitle: "Cajamar App",
+      headerStyle: {
+        backgroundColor: theme.primary
+      },
+      headerTintColor: "white",
+      headerTitleStyle: {
+        fontWeight: "bold",
+        color: "white"
+      }
+    }
+  }
 );
 
 export default createAppContainer(RootStack);

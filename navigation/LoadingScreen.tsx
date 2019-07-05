@@ -75,6 +75,9 @@ interface IState {
 }
 
 export default class LoadingScreen extends React.PureComponent<{}, IState> {
+  static navigationOptions = {
+    header: null
+  };
   constructor(props) {
     super(props);
     this.state = {

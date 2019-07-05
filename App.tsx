@@ -6,18 +6,19 @@ import React, { Component } from "react";
 import { Provider as PaperProvider, DefaultTheme } from "react-native-paper";
 import { View, Text } from "react-native";
 import { iOSColors } from "react-native-typography";
+import { theme } from "./ThemeVariables";
 
-const AppCont = createAppContainer(AppNavigator);
-
-export const theme = {
+const ThemeConstants = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: iOSColors.orange,
+    primary: theme.primary,
     accent: "yellow"
   },
   roundness: 30
 };
+
+const AppCont = createAppContainer(AppNavigator);
 
 interface StateLoad {
   loading: boolean;
@@ -48,7 +49,7 @@ export default class App extends Component<{}, StateLoad> {
     }
 
     return (
-      <PaperProvider theme={theme}>
+      <PaperProvider theme={ThemeConstants}>
         <AppCont />
       </PaperProvider>
     );
