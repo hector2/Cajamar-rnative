@@ -14,6 +14,7 @@ import React from "react";
 import { theme } from "../ThemeVariables";
 
 import LoadingScreen from "./LoadingScreen";
+import CustomHeader from "../components/CustomHeader";
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
@@ -71,17 +72,10 @@ const TabNavigator = createMaterialTopTabNavigator(
 const RootStack = createStackNavigator(
   { Loading: LoadingScreen, Loaded: TabNavigator },
   {
-    initialRouteName: "Loading",
-    defaultNavigationOptions: {
-      headerTitle: "Cajamar App",
-      headerStyle: {
-        backgroundColor: theme.primary
-      },
-      headerTintColor: "white",
-      headerTitleStyle: {
-        fontWeight: "bold",
-        color: "white"
-      }
+    defaultNavigationOptions: ({ navigation }) => {
+      return {
+        header: <CustomHeader />
+      };
     }
   }
 );

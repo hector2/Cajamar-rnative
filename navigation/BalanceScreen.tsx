@@ -1,10 +1,8 @@
 import React from "react";
+import { Button } from "react-native";
 import Balance from "../components/Balance";
 
 export default class BalanceScreen extends React.PureComponent {
-  static navigationOptions = {
-    headerTitle: "Balance"
-  };
   constructor(props) {
     super(props);
   }
