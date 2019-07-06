@@ -16,6 +16,7 @@ import {
 import { format } from "date-fns";
 import { ScrollView } from "react-native-gesture-handler";
 import ResultadoBalance from "./ResultadoBalance";
+import { GLOBAL, realOrDemo, DemoState } from "../Global";
 
 interface BalanceProps {
   balance: IBalance;
@@ -39,12 +40,17 @@ const styles = StyleSheet.create({
   }
 });
 
-class Balance extends React.PureComponent<BalanceProps, {}> {
+
+
+class Balance extends React.PureComponent<BalanceProps, DemoState> {
   constructor(props) {
     super(props);
+
+    this.state = { demo: false };
   }
 
   render() {
+    GLOBAL.BalanceState = this;
     const { colors, roundness } = this.props.theme;
     let totalColor = this.props.balance.total > 0 ? "green" : "red";
 
@@ -115,21 +121,27 @@ class Balance extends React.PureComponent<BalanceProps, {}> {
             <View style={[styles.cardRow]}>
               <MaterialCommunityIcons size={24} name="thumb-up" />
               <Text>
-                {"Ingresado: " + this.props.balance.positive.toString() + "€"}
+                {"Ingresado: " +
+                  realOrDemo(this.props.balance.positive.toString()) +
+                  "€"}
               </Text>
             </View>
 
             <View style={[styles.cardRow]}>
               <MaterialCommunityIcons size={24} name="thumb-down" />
               <Text>
-                {"Gastado: " + this.props.balance.negative.toString() + "€"}
+                {"Gastado: " +
+                  realOrDemo(this.props.balance.negative.toString()) +
+                  "€"}
               </Text>
             </View>
 
             <View style={[styles.cardRow]}>
               <MaterialCommunityIcons size={24} name="scale-balance" />
               <Text style={{ color: totalColor }}>
-                {"Total: " + this.props.balance.total.toString() + "€"}
+                {"Total: " +
+                  realOrDemo(this.props.balance.total.toString()) +
+                  "€"}
               </Text>
             </View>
           </View>

@@ -1,17 +1,18 @@
 import React from "react";
 import { Appbar } from "react-native-paper";
+import { DrawerActions } from "react-navigation";
+import { toggleDemo } from "../Global";
 
 export default class CustomHeader extends React.Component {
   _goBack = () => console.log("Went back");
 
   _onSearch = () => console.log("Searching");
 
-  _onMore = () => console.log("Shown more");
+  _onMore = () => toggleDemo();
 
   render() {
     return (
       <Appbar.Header>
-        <Appbar.BackAction onPress={this._goBack} />
         <Appbar.Content
           titleStyle={{ color: "white" }}
           title="Title"

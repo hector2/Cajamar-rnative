@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { theme } from "../ThemeVariables";
 import { Text, Surface, withTheme } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { realOrDemo } from "../Global";
 
 interface TransactionEntity {
   name: string;
@@ -168,7 +169,7 @@ class Movement extends React.PureComponent<MovementProps, {}> {
               : beautyEntity.beautyName}
           </Text>
           <Text style={{ color: color, fontWeight: "bold" }}>
-            {this.props.mov.amount.toString() + "€"}
+            {realOrDemo(this.props.mov.amount.toString()) + "€"}
           </Text>
         </View>
 
