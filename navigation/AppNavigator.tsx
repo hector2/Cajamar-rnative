@@ -15,6 +15,7 @@ import { theme } from "../ThemeVariables";
 
 import LoadingScreen from "./LoadingScreen";
 import CustomHeader from "../components/CustomHeader";
+import ErrorScreen from "./ErrorScreen";
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
@@ -70,7 +71,7 @@ const TabNavigator = createMaterialTopTabNavigator(
 );
 
 const RootStack = createStackNavigator(
-  { Loading: LoadingScreen, Loaded: TabNavigator },
+  { Loading: LoadingScreen, Error: ErrorScreen, Loaded: TabNavigator },
   {
     defaultNavigationOptions: ({ navigation }) => {
       return {

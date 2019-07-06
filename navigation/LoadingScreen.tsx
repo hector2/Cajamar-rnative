@@ -3,7 +3,7 @@ import { IMovement } from "../components/Movement";
 import { IBalance } from "../components/Balance";
 import { subDays, isBefore } from "date-fns";
 import { View } from "react-native";
-import { ActivityIndicator, Text } from "react-native-paper";
+import { ActivityIndicator, Text, Title } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
 
 function IsJsonString(str) {
@@ -70,6 +70,7 @@ function calculateBalance(coll: IMovement[], from: Date, to: Date): IBalance {
 
 interface IState {
   isLoading: boolean;
+  dataReceived: boolean;
   loadingInfo: string;
   movements: IMovement[];
   balance: IBalance;
@@ -83,6 +84,7 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
     super(props);
     this.state = {
       isLoading: true,
+      dataReceived: false,
       loadingInfo: "Cargando",
       movements: [],
       balance: undefined
@@ -150,6 +152,7 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
             this.setState(
               {
                 isLoading: false,
+                dataReceived: true,
                 movements: filtered,
                 balance: balance
               },
@@ -186,6 +189,18 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
         // an error occurred
         console.log("error websocket");
         //console.log(e);
+
+        if (!this.state.dataReceived) {
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: "Error"
+              })
+            ]
+          });
+          this.props.navigation.dispatch(resetAction);
+        }
       };
 
       ws.onclose = e => {
@@ -204,7 +219,7 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <ActivityIndicator animating={true} size={64} />
-        <Text>{this.state.loadingInfo}</Text>
+        <Title>{this.state.loadingInfo}</Title>
       </View>
     );
   }
