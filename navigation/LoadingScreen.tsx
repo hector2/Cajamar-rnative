@@ -4,6 +4,7 @@ import { IBalance } from "../components/Balance";
 import { subDays, isBefore } from "date-fns";
 import { View } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
+import { StackActions, NavigationActions } from "react-navigation";
 
 function IsJsonString(str) {
   try {
@@ -153,10 +154,26 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
                 balance: balance
               },
               () => {
+                const resetAction = StackActions.reset({
+                  index: 0,
+                  actions: [
+                    NavigationActions.navigate({
+                      routeName: "Loaded",
+                      params: {
+                        balance: balance,
+                        movements: filtered
+                      }
+                    })
+                  ]
+                });
+                this.props.navigation.dispatch(resetAction);
+
+                /*
                 this.props.navigation.navigate("Loaded", {
                   balance: balance,
                   movements: filtered
                 });
+*/
               }
             );
           }

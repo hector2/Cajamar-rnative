@@ -35,7 +35,8 @@ class ResultadoBalance extends React.PureComponent<ResultadoBalanceProps, {}> {
         elevation={5}
         style={{
           backgroundColor: colors.primary,
-          margin: 5
+          margin: 5,
+          padding: 5
         }}
       >
         <Image
