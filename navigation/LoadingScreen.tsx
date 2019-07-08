@@ -5,6 +5,7 @@ import { subDays, isBefore } from "date-fns";
 import { View } from "react-native";
 import { ActivityIndicator, Text, Title } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
+import { encryptStringWithRsaPublicKey } from "../Security";
 
 function IsJsonString(str) {
   try {
@@ -94,10 +95,25 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
   async componentDidMount() {
     try {
       var ws = new WebSocket("ws://cajamar-scrapper.herokuapp.com");
+      //var ws = new WebSocket("ws://192.168.1.38:3000");
 
-      ws.onopen = () => {
+      ws.onopen = async () => {
         // connection opened
         //ws.send("something"); // send a message
+
+        //https://stackoverflow.com/questions/46642143/rsa-encrypt-decrypt-in-typescript
+        //let algo = Config.PUBLIC_KEY;
+        console.log(Expo.Constants.manifest.extra.publicKey);
+
+        let msg = "Comprobando RSA";
+
+        let enc = encryptStringWithRsaPublicKey(
+          msg,
+          Expo.Constants.manifest.extra.publicKey
+        );
+
+        console.log("enc", enc);
+        ws.send(enc);
       };
 
       ws.onmessage = e => {
