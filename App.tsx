@@ -1,5 +1,3 @@
-import * as Font from "expo-font";
-
 import { createAppContainer } from "react-navigation";
 import AppNavigator from "./navigation/AppNavigator";
 import React, { Component } from "react";

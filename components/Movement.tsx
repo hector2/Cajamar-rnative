@@ -4,7 +4,7 @@ import { Image, View } from "react-native";
 import { format } from "date-fns";
 import { theme } from "../ThemeVariables";
 import { Text, Surface, withTheme } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { realOrDemo } from "../Global";
 
 interface TransactionEntity {
@@ -182,7 +182,7 @@ class Movement extends React.PureComponent<MovementProps, {}> {
             borderBottomRightRadius: roundness
           }}
         >
-          <MaterialCommunityIcons
+          <Icon
             size={32}
             style={{ color: "gray" }}
             name="calendar"
