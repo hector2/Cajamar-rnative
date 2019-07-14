@@ -5,7 +5,12 @@ import { subDays, isBefore } from "date-fns";
 import { View } from "react-native";
 import { ActivityIndicator, Text, Title } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
-import { publicEncrypt, randomBytes } from 'crypto'
+import { generatePayload, encryptWithPublicKey } from "./Security";
+
+
+
+
+
 
 function IsJsonString(str) {
   try {
@@ -103,38 +108,52 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
 
 
 
-        let key = "-----BEGIN PUBLIC KEY-----\n" + 
-        "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEApo8pWDEsqrqGwoZYswOl\n" + 
-        "w1oNM64KSazC6ZVC2voj55PZJ4mXqZ4d9IKV9AumonhF4D/zOnefVb8jTXkd+edV\n" + 
-        "hkseU7uMh4ZdFNTlOZmFnNiDQ2Phb/tiTOMBkV+YWGyRa8nw9jOCYHWRGMAw/cUA\n" + 
-        "Y0UGCFstFuZISJq7pP9ty9ITYOPVgJNVjmygim6hNJ3fMdrqj40DKU1eHxjWgPgs\n" + 
-        "a2od9a3fQhp3Xsme5tszl+k2gm55QIgJAr6W0UfrXa0Tee5lReQ4fWdLBuM34Gil\n" + 
-        "gDHQAOrgECbznBE+ElFtJeKCwa8BIMoBw9EMsqPw+NozZRawVUXjBDvLezMuithq\n" + 
-        "8aPaxFbSdDNSavV7x4pA95+sLoPYPhiFpDTUI+4pySHrOnyEUuezO7JFmRV43ZZT\n" + 
-        "BvGowDUBmgM4ITMPDPUgKefCNHUcaKN8PrBMTs20WCL/gmbJ4Nasm5uv3nq9vxWC\n" + 
-        "AqJtLZm4C2mCVXUZCGJlhtuSLzqZUQr9igZgRHK4IkIxdaUa4xd+aOTB6ZBBrx02\n" + 
-        "5Jk9UMVD1Rjp5mRZ+e4Y2qY4sskZzcdcjJ/QHoakBtNTDjhFr+3uAY3FlSiHJIyP\n" + 
-        "3jSRehnBxDb4Mi7xoCgauDOT0oUaOidLXs0fcV/5h1+4Uh10JQCbe1KAM0VDlrDE\n" + 
-        "DcL/BQRiZGJssZ/WpbdUXuECAwEAAQ==\n" + 
-        "-----END PUBLIC KEY-----\n ";
-        
 
 
 
 
-        // use crypto
-        console.log("random", randomBytes(32).toString('hex'))
+        //https://gist.github.com/vlucas/2bd40f62d20c1d49237a109d491974eb
 
-        console.log(key)
+        //encrypt aes
 
-        let str = "JEJE HOLA DESDE REACT NATIVE"
+        /*
+        const cipher = createCipheriv(ALGORITHM, Buffer.from(pass), iv);
+
+        let text = "JEJE ESTO NO DEBERIAS LEERLO"
+        let encaes = cipher.update(text);
+        encaes = Buffer.concat([encaes, cipher.final()]);
+
+        let result = encaes.toString('hex');
+
+        console.log("enc aes", result)
 
 
-        const buffer = Buffer.from(str)
-        const encrypted = publicEncrypt(key, buffer)
+        //decrypt aes
+
+        let encryptedText = Buffer.from(result, 'hex');
+        console.log("encryptedtext", encryptedText)
+        let decipher = createDecipheriv(ALGORITHM, Buffer.from(pass), iv);
+        let decrypted = decipher.update(encryptedText);
+        decrypted = Buffer.concat([decrypted, decipher.final()]);
+        console.log("dec aes", decrypted.toString());
+
+
+*/
+
+
+
+
+
+
+        //let str = "JEJE HOLA DESDE REACT NATIVE"
+
+
+        const payload = generatePayload()
+        const buffer = Buffer.from(payload)
+        const encrypted = encryptWithPublicKey(buffer)
         let enc = encrypted.toString('base64')
         console.log(enc)
-        
+
 
         ws.send(enc)
 
