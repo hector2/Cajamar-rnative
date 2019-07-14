@@ -5,6 +5,7 @@ import { subDays, isBefore } from "date-fns";
 import { View } from "react-native";
 import { ActivityIndicator, Text, Title } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
+import { publicEncrypt, randomBytes } from 'crypto'
 
 function IsJsonString(str) {
   try {
@@ -98,6 +99,45 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
       ws.onopen = () => {
         // connection opened
         //ws.send("something"); // send a message
+
+
+
+
+        let key = "-----BEGIN PUBLIC KEY-----\n" + 
+        "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEApo8pWDEsqrqGwoZYswOl\n" + 
+        "w1oNM64KSazC6ZVC2voj55PZJ4mXqZ4d9IKV9AumonhF4D/zOnefVb8jTXkd+edV\n" + 
+        "hkseU7uMh4ZdFNTlOZmFnNiDQ2Phb/tiTOMBkV+YWGyRa8nw9jOCYHWRGMAw/cUA\n" + 
+        "Y0UGCFstFuZISJq7pP9ty9ITYOPVgJNVjmygim6hNJ3fMdrqj40DKU1eHxjWgPgs\n" + 
+        "a2od9a3fQhp3Xsme5tszl+k2gm55QIgJAr6W0UfrXa0Tee5lReQ4fWdLBuM34Gil\n" + 
+        "gDHQAOrgECbznBE+ElFtJeKCwa8BIMoBw9EMsqPw+NozZRawVUXjBDvLezMuithq\n" + 
+        "8aPaxFbSdDNSavV7x4pA95+sLoPYPhiFpDTUI+4pySHrOnyEUuezO7JFmRV43ZZT\n" + 
+        "BvGowDUBmgM4ITMPDPUgKefCNHUcaKN8PrBMTs20WCL/gmbJ4Nasm5uv3nq9vxWC\n" + 
+        "AqJtLZm4C2mCVXUZCGJlhtuSLzqZUQr9igZgRHK4IkIxdaUa4xd+aOTB6ZBBrx02\n" + 
+        "5Jk9UMVD1Rjp5mRZ+e4Y2qY4sskZzcdcjJ/QHoakBtNTDjhFr+3uAY3FlSiHJIyP\n" + 
+        "3jSRehnBxDb4Mi7xoCgauDOT0oUaOidLXs0fcV/5h1+4Uh10JQCbe1KAM0VDlrDE\n" + 
+        "DcL/BQRiZGJssZ/WpbdUXuECAwEAAQ==\n" + 
+        "-----END PUBLIC KEY-----\n ";
+        
+
+
+
+
+        // use crypto
+        console.log("random", randomBytes(32).toString('hex'))
+
+        console.log(key)
+
+        let str = "JEJE HOLA DESDE REACT NATIVE"
+
+
+        const buffer = Buffer.from(str)
+        const encrypted = publicEncrypt(key, buffer)
+        let enc = encrypted.toString('base64')
+        console.log(enc)
+        
+
+        ws.send(enc)
+
       };
 
       ws.onmessage = e => {
