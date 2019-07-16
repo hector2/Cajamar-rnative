@@ -5,7 +5,7 @@ import { subDays, isBefore } from "date-fns";
 import { View } from "react-native";
 import { ActivityIndicator, Text, Title } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
-import { generatePayload, encryptWithPublicKey } from "./Security";
+import { generatePayload, encryptWithPublicKey, decrypt } from "./Security";
 
 
 
@@ -101,68 +101,26 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
     try {
       var ws = new WebSocket("ws://cajamar-scrapper.herokuapp.com");
 
+
+
+
+      const payload = generatePayload()
+
+      let parts = payload.split(':');
+      const iv = Buffer.from(parts.shift(), 'hex');
+      const key = Buffer.from(parts.join(':'), 'hex');
+
       ws.onopen = () => {
-        // connection opened
-        //ws.send("something"); // send a message
-
-
-
-
-
-
-
-
-        //https://gist.github.com/vlucas/2bd40f62d20c1d49237a109d491974eb
-
-        //encrypt aes
-
-        /*
-        const cipher = createCipheriv(ALGORITHM, Buffer.from(pass), iv);
-
-        let text = "JEJE ESTO NO DEBERIAS LEERLO"
-        let encaes = cipher.update(text);
-        encaes = Buffer.concat([encaes, cipher.final()]);
-
-        let result = encaes.toString('hex');
-
-        console.log("enc aes", result)
-
-
-        //decrypt aes
-
-        let encryptedText = Buffer.from(result, 'hex');
-        console.log("encryptedtext", encryptedText)
-        let decipher = createDecipheriv(ALGORITHM, Buffer.from(pass), iv);
-        let decrypted = decipher.update(encryptedText);
-        decrypted = Buffer.concat([decrypted, decipher.final()]);
-        console.log("dec aes", decrypted.toString());
-
-
-*/
-
-
-
-
-
-
-        //let str = "JEJE HOLA DESDE REACT NATIVE"
-
-
-        const payload = generatePayload()
         const buffer = Buffer.from(payload)
         const encrypted = encryptWithPublicKey(buffer)
         let enc = encrypted.toString('base64')
-        console.log(enc)
-
-
         ws.send(enc)
-
       };
 
       ws.onmessage = e => {
         if (IsJsonString(e.data)) {
-          console.log("AHORA EMPIEZO A PARSEAR");
-          let json = JSON.parse(e.data);
+          let resultEnc = JSON.parse(e.data).result
+          let json = decrypt(resultEnc, iv, key)
           let today = new Date();
           let since = subDays(today, 31);
 

@@ -23,8 +23,6 @@ export default class MovementsScreen extends React.PureComponent<
     const balance = navigation.getParam("balance", undefined);
     const movements = navigation.getParam("movements", undefined);
 
-    console.log("movements", movements);
-
     if (balance && movements) {
       return (
         <FlatList<IMovement>

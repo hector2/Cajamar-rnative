@@ -10,7 +10,6 @@ export interface DemoState {
 }
 
 export function toggleDemo() {
-  console.log("hola");
   demo = !demo;
   GLOBAL.BalanceState.setState({
     demo: demo

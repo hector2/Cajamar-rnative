@@ -1,4 +1,9 @@
-import { randomBytes, pbkdf2Sync, publicEncrypt } from "crypto";
+import {
+  randomBytes,
+  pbkdf2Sync,
+  publicEncrypt,
+  createDecipheriv
+} from "crypto";
 
 //https://gist.github.com/vlucas/2bd40f62d20c1d49237a109d491974eb
 
@@ -35,7 +40,14 @@ export function generatePayload(): string {
 }
 
 export function encryptWithPublicKey(buffer) {
-    return publicEncrypt(PUBKEY, buffer)
+  return publicEncrypt(PUBKEY, buffer);
+}
+
+export function decrypt(payload, iv, key) {
+  let decipher = createDecipheriv(ALGORITHM, key, iv);
+  let decrypted = decipher.update(Buffer.from(payload, "hex"));
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return JSON.parse(decrypted.toString());
 }
 
 function randomPass() {
