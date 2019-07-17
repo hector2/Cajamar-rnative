@@ -1,7 +1,10 @@
 import React from "react";
 import { StyleSheet, Image, View } from "react-native";
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 import { theme } from "../ThemeVariables";
 import {
@@ -109,7 +112,7 @@ class Balance extends React.PureComponent<BalanceProps, DemoState> {
                 }
               ]}
             >
-              <MaterialCommunityIcons size={24} name="calendar" />
+              <Icon size={24} name="calendar" />
               <Text>
                 {"" +
                   format(this.props.balance.from, "DD/MM/YYYY") +
@@ -119,7 +122,7 @@ class Balance extends React.PureComponent<BalanceProps, DemoState> {
             </View>
 
             <View style={[styles.cardRow]}>
-              <MaterialCommunityIcons size={24} name="thumb-up" />
+              <Icon size={24} name="thumb-up" />
               <Text>
                 {"Ingresado: " +
                   realOrDemo(this.props.balance.positive.toString()) +
@@ -128,7 +131,7 @@ class Balance extends React.PureComponent<BalanceProps, DemoState> {
             </View>
 
             <View style={[styles.cardRow]}>
-              <MaterialCommunityIcons size={24} name="thumb-down" />
+              <Icon size={24} name="thumb-down" />
               <Text>
                 {"Gastado: " +
                   realOrDemo(this.props.balance.negative.toString()) +
@@ -137,7 +140,7 @@ class Balance extends React.PureComponent<BalanceProps, DemoState> {
             </View>
 
             <View style={[styles.cardRow]}>
-              <MaterialCommunityIcons size={24} name="scale-balance" />
+              <Icon size={24} name="scale-balance" />
               <Text style={{ color: totalColor }}>
                 {"Total: " +
                   realOrDemo(this.props.balance.total.toString()) +

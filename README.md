@@ -4,7 +4,6 @@ TO-DO
 
 - [ ] Ajustar fechadesde y fechaHasta.
 - [ ] Ajustes para poder cambiar lo de modo demo o no.
-- [ ] Sistema de clave privada publica para encriptar las comunicaciones punto a punto.
 - [ ] Creds para que se puedan usar con cuentas de Cajamar.
 - [ ] AWS Amplify para persistencia.
 

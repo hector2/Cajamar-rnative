@@ -5,6 +5,12 @@ import { subDays, isBefore } from "date-fns";
 import { View } from "react-native";
 import { ActivityIndicator, Text, Title } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
+import { generatePayload, encryptWithPublicKey, decrypt } from "./Security";
+
+
+
+
+
 
 function IsJsonString(str) {
   try {
@@ -95,15 +101,26 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
     try {
       var ws = new WebSocket("ws://cajamar-scrapper.herokuapp.com");
 
+
+
+
+      const payload = generatePayload()
+
+      let parts = payload.split(':');
+      const iv = Buffer.from(parts.shift(), 'hex');
+      const key = Buffer.from(parts.join(':'), 'hex');
+
       ws.onopen = () => {
-        // connection opened
-        //ws.send("something"); // send a message
+        const buffer = Buffer.from(payload)
+        const encrypted = encryptWithPublicKey(buffer)
+        let enc = encrypted.toString('base64')
+        ws.send(enc)
       };
 
       ws.onmessage = e => {
         if (IsJsonString(e.data)) {
-          console.log("AHORA EMPIEZO A PARSEAR");
-          let json = JSON.parse(e.data);
+          let resultEnc = JSON.parse(e.data).result
+          let json = decrypt(resultEnc, iv, key)
           let today = new Date();
           let since = subDays(today, 31);
 

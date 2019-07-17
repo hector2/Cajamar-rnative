@@ -4,7 +4,7 @@ import {
   createStackNavigator
 } from "react-navigation";
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import BalanceScreen from "./BalanceScreen";
 
@@ -24,11 +24,10 @@ const TabNavigator = createMaterialTopTabNavigator(
       navigationOptions: {
         tabBarIcon: state => {
           return (
-            <MaterialCommunityIcons
+            <Icon
               size={48}
               style={{ width: 48, color: state.tintColor }}
               color={state.tintColor}
-              type="MaterialCommunityIcons"
               name="scale-balance"
             />
           );
@@ -40,11 +39,10 @@ const TabNavigator = createMaterialTopTabNavigator(
       navigationOptions: {
         tabBarIcon: state => {
           return (
-            <MaterialCommunityIcons
+            <Icon
               size={48}
               style={{ width: 48, color: state.tintColor }}
               color={state.tintColor}
-              type="MaterialCommunityIcons"
               name="bank-transfer"
             />
           );
