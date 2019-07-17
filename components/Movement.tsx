@@ -39,6 +39,12 @@ const namesResolver: TransactionEntity[] = [
     beautyName: "Bizum"
   },
   {
+    name: "CARGO BIZUM",
+    uri:
+      "https://www.vectorlogo.es/wp-content/uploads/2019/05/logo-vector-bizum.jpg",
+    beautyName: "Bizum"
+  },
+  {
     name: "CARGO PAGO INMEDIATO",
     uri:
       "https://www.vectorlogo.es/wp-content/uploads/2019/05/logo-vector-bizum.jpg",
