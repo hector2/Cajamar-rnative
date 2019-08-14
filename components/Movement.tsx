@@ -74,6 +74,12 @@ const namesResolver: TransactionEntity[] = [
     beautyName: "Paypal"
   },
   {
+    name: "PayPal",
+    uri:
+      "https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg",
+    beautyName: "PayPal"
+  },
+  {
     name: "NOMINA",
     uri:
       "http://sageone-spain-wordpress.s3.amazonaws.com/images/Agosto2014/nominas-o-facturas-como-cobro-de-mi-empresa.jpg",
