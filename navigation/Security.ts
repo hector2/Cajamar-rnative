@@ -30,12 +30,12 @@ const DIGEST = "sha512";
 const ITERATIONS = 50000;
 
 export function generatePayload(): string {
-  console.time("payload");
+  //console.time("payload");
   const salt = randomBytes(64);
   const iv = randomBytes(IV_LENGTH);
   //const pass = scryptSync(randomPass(), salt, 32);
   const pass = pbkdf2Sync(randomPass(), salt, ITERATIONS, PASS_LENGTH, DIGEST);
-  console.timeEnd("payload");
+  //console.timeEnd("payload");
   return iv.toString("hex") + ":" + pass.toString("hex");
 }
 

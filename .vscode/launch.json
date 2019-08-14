@@ -9,14 +9,8 @@
             "cwd": "${workspaceFolder}",
             "type": "reactnative",
             "request": "launch",
-            "platform": "android",
-            "sourceMaps": true
-        },
-        {
-            "name": "Attach to packager",
-            "cwd": "${workspaceFolder}",
-            "type": "reactnative",
-            "request": "attach"
+            "platform": "android"
         }
+
     ]
 }

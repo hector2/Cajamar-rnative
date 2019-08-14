@@ -28,7 +28,7 @@ export default class App extends Component<{}, StateLoad> {
     this.state = { loading: true };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     /*
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
