@@ -141,6 +141,7 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_viewpager')
     implementation project(':react-native-randombytes')
 
     if (useIntlJsc) {

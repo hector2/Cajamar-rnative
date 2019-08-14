@@ -3,9 +3,11 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "postinstall": "./node_modules/.bin/rn-nodeify --hack --install"
+    "postinstall": "./node_modules/.bin/rn-nodeify --hack --install",
+    "clean": "rm -rf node_modules && rm -rf package-lock.json"
   },
   "dependencies": {
+    "@react-native-community/viewpager": "^1.1.7",
     "@tradle/react-native-http": "^2.0.1",
     "assert": "^1.5.0",
     "browserify-zlib": "^0.1.4",
