@@ -94,15 +94,11 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
   async componentDidMount() {
     try {
 
-
       let response = await fetch(
         'https://xwhzp8zwv9.execute-api.eu-west-3.amazonaws.com/dev/scrap',
       );
       let responseJson = await response.json();
-      //return responseJson.movies;
-
-
-
+ 
       let today = new Date();
       let since = subDays(today, 31);
 
