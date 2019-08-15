@@ -5,12 +5,6 @@ import { subDays, isBefore } from "date-fns";
 import { View } from "react-native";
 import { ActivityIndicator, Text, Title } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
-import { generatePayload, encryptWithPublicKey, decrypt } from "./Security";
-
-
-
-
-
 
 function IsJsonString(str) {
   try {
@@ -99,136 +93,103 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
 
   async componentDidMount() {
     try {
-      var ws = new WebSocket("ws://cajamar-scrapper.herokuapp.com");
+
+
+      let response = await fetch(
+        'https://xwhzp8zwv9.execute-api.eu-west-3.amazonaws.com/dev/scrap',
+      );
+      let responseJson = await response.json();
+      //return responseJson.movies;
 
 
 
+      let today = new Date();
+      let since = subDays(today, 31);
 
-      const payload = generatePayload()
+      console.log(since);
 
-      let parts = payload.split(':');
-      const iv = Buffer.from(parts.shift(), 'hex');
-      const key = Buffer.from(parts.join(':'), 'hex');
+      let filtered: IMovement[] = [];
 
-      ws.onopen = () => {
-        const buffer = Buffer.from(payload)
-        const encrypted = encryptWithPublicKey(buffer)
-        let enc = encrypted.toString('base64')
-        ws.send(enc)
-      };
+      for (let mov of responseJson) {
+        let parts = mov.date.split("/");
+        let fechamov = new Date(
+          parseInt(parts[2]),
+          parseInt(parts[1]) - 1,
+          parseInt(parts[0]) + 1
+        );
 
-      ws.onmessage = e => {
-        if (IsJsonString(e.data)) {
-          let resultEnc = JSON.parse(e.data).result
-          let json = decrypt(resultEnc, iv, key)
-          let today = new Date();
-          let since = subDays(today, 31);
+        fechamov.setHours(0);
+        fechamov.setMinutes(0);
+        fechamov.setSeconds(0);
+        fechamov.setMilliseconds(0);
 
-          console.log(since);
-
-          let filtered: IMovement[] = [];
-
-          for (let mov of json) {
-            let parts = mov.date.split("/");
-            let fechamov = new Date(
-              parseInt(parts[2]),
-              parseInt(parts[1]) - 1,
-              parseInt(parts[0]) + 1
-            );
-
-            fechamov.setHours(0);
-            fechamov.setMinutes(0);
-            fechamov.setSeconds(0);
-            fechamov.setMilliseconds(0);
-
-            if (isBefore(since, fechamov)) {
-              let movement: IMovement = {
-                id: mov.id,
-                date: fechamov,
-                concept: mov.concept,
-                amount: mov.amount
-              };
-              filtered.push(movement);
-            }
-          }
-
-          let mostImportant = getImportantMovements(filtered);
-
-          if (mostImportant) {
-            let index = filtered.indexOf(mostImportant);
-            if (index < filtered.length - 1 && index !== -1) {
-              filtered = filtered.slice(0, index + 1);
-            }
-
-            const balance = calculateBalance(
-              filtered,
-              mostImportant.date,
-              today
-            );
-
-            this.setState(
-              {
-                isLoading: false,
-                dataReceived: true,
-                movements: filtered,
-                balance: balance
-              },
-              () => {
-                const resetAction = StackActions.reset({
-                  index: 0,
-                  actions: [
-                    NavigationActions.navigate({
-                      routeName: "Loaded",
-                      params: {
-                        balance: balance,
-                        movements: filtered
-                      }
-                    })
-                  ]
-                });
-                this.props.navigation.dispatch(resetAction);
-
-                /*
-                this.props.navigation.navigate("Loaded", {
-                  balance: balance,
-                  movements: filtered
-                });
-*/
-              }
-            );
-          }
-        } else {
-          this.setState({ loadingInfo: e.data });
+        if (isBefore(since, fechamov)) {
+          let movement: IMovement = {
+            id: mov.id,
+            date: fechamov,
+            concept: mov.concept,
+            amount: mov.amount
+          };
+          filtered.push(movement);
         }
-      };
+      }
 
-      ws.onerror = e => {
-        // an error occurred
-        console.log("error websocket");
-        //console.log(e);
+      let mostImportant = getImportantMovements(filtered);
 
-        if (!this.state.dataReceived) {
-          const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({
-                routeName: "Error"
-              })
-            ]
-          });
-          this.props.navigation.dispatch(resetAction);
+      if (mostImportant) {
+        let index = filtered.indexOf(mostImportant);
+        if (index < filtered.length - 1 && index !== -1) {
+          filtered = filtered.slice(0, index + 1);
         }
-      };
 
-      ws.onclose = e => {
-        // connection closed
-        //console.log(e.code, e.reason);
-      };
+        const balance = calculateBalance(
+          filtered,
+          mostImportant.date,
+          today
+        );
+
+        this.setState(
+          {
+            isLoading: false,
+            dataReceived: true,
+            movements: filtered,
+            balance: balance
+          },
+          () => {
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({
+                  routeName: "Loaded",
+                  params: {
+                    balance: balance,
+                    movements: filtered
+                  }
+                })
+              ]
+            });
+            this.props.navigation.dispatch(resetAction);
+          }
+        );
+      }
     } catch (err) {
-      console.log("ERROR");
+      // an error occurred
+      console.log("error");
       console.log(err);
+
+      if (!this.state.dataReceived) {
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({
+              routeName: "Error"
+            })
+          ]
+        });
+        this.props.navigation.dispatch(resetAction);
+      }
     } finally {
-      ws.close();
+      //ws.close();
     }
   }
 
