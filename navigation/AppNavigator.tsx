@@ -16,6 +16,7 @@ import { theme } from "../ThemeVariables";
 import LoadingScreen from "./LoadingScreen";
 import CustomHeader from "../components/CustomHeader";
 import ErrorScreen from "./ErrorScreen";
+import LoginScreen from "./LoginScreen";
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
@@ -69,7 +70,7 @@ const TabNavigator = createMaterialTopTabNavigator(
 );
 
 const RootStack = createStackNavigator(
-  { Loading: LoadingScreen, Error: ErrorScreen, Loaded: TabNavigator },
+  { Login: LoginScreen, Loading: LoadingScreen, Error: ErrorScreen, Loaded: TabNavigator },
   {
     defaultNavigationOptions: ({ navigation }) => {
       return {

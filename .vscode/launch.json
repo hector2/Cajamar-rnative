@@ -9,8 +9,10 @@
             "cwd": "${workspaceFolder}",
             "type": "reactnative",
             "request": "launch",
-            "platform": "android"
+            "platform": "android",
+            "sourceMaps": true
         }
+
 
     ]
 }

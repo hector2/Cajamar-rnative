@@ -7,11 +7,12 @@ import { ActivityIndicator, Text, Title } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
 
 import AsyncStorage from '@react-native-community/async-storage';
+import { UPDATED_KEY, EVICT_ITEMS_THRESHOLD, UNAUTHORIZED, INTERNAL_ERROR } from "../Constants";
 
 
 
-const UPDATED_KEY = "updated"
-const EVICT_ITEMS_THRESHOLD = 6 //hours
+
+
 
 
 
@@ -46,7 +47,7 @@ function getImportantMovements(coll: IMovement[]) {
 
 
 async function getStoredMovements() {
-  let movements:IMovement[] = []
+  let movements: IMovement[] = []
   let movKeys = await AsyncStorage.getAllKeys()
   movKeys = movKeys.filter((v) => v !== UPDATED_KEY)
 
@@ -56,13 +57,13 @@ async function getStoredMovements() {
 
   console.log("keyvalues", keyvalues)
 
-  keyvalues.map((v) => v[1]).forEach((v) =>  {
-    let parsed =  JSON.parse(v)
+  keyvalues.map((v) => v[1]).forEach((v) => {
+    let parsed = JSON.parse(v)
 
     console.log("compare parsed and final", parsed.date, new Date(parsed.date))
 
-    let mov:IMovement = {
-      id:parsed.id,
+    let mov: IMovement = {
+      id: parsed.id,
       date: new Date(parsed.date),
       concept: parsed.concept,
       amount: parsed.amount
@@ -72,23 +73,37 @@ async function getStoredMovements() {
 
   console.log("movements offline", movements)
 
-  movements = movements.sort((a,b) => b.date.getTime() - a.date.getTime())
+  movements = movements.sort((a, b) => b.date.getTime() - a.date.getTime())
 
   console.log("movements sorted", movements)
 
   return movements
 }
 
-async function getFreshMovements(since:Date) {
+async function getFreshMovements(since: Date, username: string, password: string) {
 
-  const movements:IMovement[] = []
+  const movements: IMovement[] = []
   let response = await fetch(
     'https://xwhzp8zwv9.execute-api.eu-west-3.amazonaws.com/dev/scrap',
+    {
+      method: 'POST',
+      body: JSON.stringify({ username: username, password: password }), // data can be `string` or {object}!
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
   );
   let responseJson = await response.json();
 
+  if (responseJson.statusCode === UNAUTHORIZED) {
+    throw UNAUTHORIZED
+  } else if (responseJson.statusCode === INTERNAL_ERROR) {
+    throw INTERNAL_ERROR
+  }
+
   console.log(since);
 
+  responseJson = responseJson.content
 
 
   for (let mov of responseJson) {
@@ -169,33 +184,35 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
 
   async componentDidMount() {
     try {
+
+      const { navigation } = this.props;
+      const username = navigation.getParam("username", undefined);
+      const password = navigation.getParam("password", undefined);
+
+      let fetchFromApi = false
+
+      if (username && password) {
+        fetchFromApi = true
+      }
+
       let today = new Date();
       let since = subDays(today, 31);
 
-      //TODO DEMO
-      //await AsyncStorage.clear()
-
-      const lastUpdated:Date = JSON.parse(await AsyncStorage.getItem(UPDATED_KEY))
-      console.log(UPDATED_KEY, lastUpdated)
 
       let filtered: IMovement[] = [];
 
-      let hoursLastUpdate = 999
-      if (lastUpdated) {
-        hoursLastUpdate = differenceInHours(today,lastUpdated)
-      }
 
-      console.log("hoursLastUpdate", hoursLastUpdate)
-      if (hoursLastUpdate > EVICT_ITEMS_THRESHOLD) {
+
+      if (fetchFromApi) {
         console.log("GET ITEMS FROM API")
         await AsyncStorage.clear()
-        filtered = await getFreshMovements(since)
+        filtered = await getFreshMovements(since, username, password)
 
-        let storageFriendly = filtered.map((value,index) => {
-          return [index.toString(),JSON.stringify(value)]
+        let storageFriendly = filtered.map((value, index) => {
+          return [index.toString(), JSON.stringify(value)]
         })
         await AsyncStorage.multiSet(storageFriendly)
-        await AsyncStorage.setItem(UPDATED_KEY,JSON.stringify(today))
+        await AsyncStorage.setItem(UPDATED_KEY, JSON.stringify(today))
 
       } else {
         console.log("GET ITEMS FROM OFFLINE CACHE")
@@ -245,17 +262,23 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
       console.log("error");
       console.log(err);
 
-      if (!this.state.dataReceived) {
-        const resetAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({
-              routeName: "Error"
-            })
-          ]
-        });
-        this.props.navigation.dispatch(resetAction);
+      if (err === UNAUTHORIZED) {
+        this.props.navigation.goBack()
+      } else {
+        if (!this.state.dataReceived) {
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: "Error"
+              })
+            ]
+          });
+          this.props.navigation.dispatch(resetAction);
+        }
       }
+
+
     } finally {
       //ws.close();
     }
