@@ -15,7 +15,7 @@ class ResultadoBalance extends React.PureComponent<ResultadoBalanceProps, {}> {
   }
 
   render() {
-    const { colors, roundness } = this.props.theme;
+    const { colors } = this.props.theme;
     let resImage = happyPiggy;
     let message =
       "¡Genial! Has conseguido ahorrar un " +

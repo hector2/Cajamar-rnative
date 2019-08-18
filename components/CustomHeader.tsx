@@ -19,8 +19,9 @@ export default class CustomHeader extends React.Component {
           subtitle="Subtitle"
           subtitleStyle={{ color: "white" }}
         />
-        <Appbar.Action icon="search" onPress={this._onSearch} />
-        <Appbar.Action icon="more-vert" onPress={this._onMore} />
+        <Appbar.Action icon="search-web" onPress={this._onSearch} />
+        <Appbar.Action  icon="more" onPress={this._onMore} />
+
       </Appbar.Header>
     );
   }

@@ -263,6 +263,7 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
       console.log(err);
 
       if (err === UNAUTHORIZED) {
+        this.props.navigation.state.params.onLoginFailed()
         this.props.navigation.goBack()
       } else {
         if (!this.state.dataReceived) {
