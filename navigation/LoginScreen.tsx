@@ -29,7 +29,7 @@ export default class LoginScreen extends React.PureComponent<{}, IState> {
 
     async componentDidMount() {
 
-        //demo
+        // TODO  demo
         await AsyncStorage.clear()
 
         const lastUpdated: Date = JSON.parse(await AsyncStorage.getItem(UPDATED_KEY))

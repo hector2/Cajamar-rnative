@@ -19,7 +19,7 @@ import { UPDATED_KEY, EVICT_ITEMS_THRESHOLD, UNAUTHORIZED, INTERNAL_ERROR } from
 function getImportantMovements(coll: IMovement[]) {
   let masBeneficiosos = coll
     .filter(mov => mov.amount > 0)
-    .sort((a, b) => a.amount - b.amount);
+    .sort((a, b) => b.amount - a.amount);
 
   if (masBeneficiosos.length > 1) {
     masBeneficiosos = masBeneficiosos.slice(0, 1);
@@ -39,9 +39,16 @@ function getImportantMovements(coll: IMovement[]) {
   console.log("masmalos");
   console.log(masMalos);
 
-  //TODO segun la estrategia
-  if (masMalos.length > 0) {
+  if (masBeneficiosos.length > 0 && masMalos.length === 0) {
+    return masBeneficiosos[0]
+  } else if (masMalos.length > 0 && masBeneficiosos.length === 0) {
     return masMalos[0];
+  } else if (masMalos.length > 0 && masBeneficiosos.length > 0) {
+    let masBien = masBeneficiosos[0]
+    let masMal = masMalos[0]
+    return isBefore(masBien.date, masMal.date) ? masBien : masMal
+  } else {
+    throw "No movements"
   }
 }
 
@@ -101,7 +108,7 @@ async function getFreshMovements(since: Date, username: string, password: string
     throw INTERNAL_ERROR
   }
 
-  console.log(since);
+  console.log("since", since);
 
   responseJson = responseJson.content
 

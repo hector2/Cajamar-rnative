@@ -13,91 +13,7 @@ interface TransactionEntity {
   beautyName: string;
 }
 
-const namesResolver: TransactionEntity[] = [
-  {
-    name: "MERCADONA",
-    uri:
-      "https://pbs.twimg.com/profile_images/899390660440199169/reHRnc5T_400x400.jpg",
-    beautyName: "Mercadona"
-  },
-  {
-    name: "AMZN",
-    uri:
-      "http://g-ec2.images-amazon.com/images/G/01/social/api-share/amazon_logo_500500.png",
-    beautyName: "Amazon"
-  },
-  {
-    name: "CAJAMAR",
-    uri:
-      "https://www.sanroque.es/sites/default/files//styles/medium-large470/public/imag_direccion/2017/06/29/cajamar.png?itok=-5wTdVjZ",
-    beautyName: "Cajamar"
-  },
-  {
-    name: "ABONO BIZUM",
-    uri:
-      "https://www.vectorlogo.es/wp-content/uploads/2019/05/logo-vector-bizum.jpg",
-    beautyName: "Bizum"
-  },
-  {
-    name: "CARGO BIZUM",
-    uri:
-      "https://www.vectorlogo.es/wp-content/uploads/2019/05/logo-vector-bizum.jpg",
-    beautyName: "Bizum"
-  },
-  {
-    name: "CARGO PAGO INMEDIATO",
-    uri:
-      "https://www.vectorlogo.es/wp-content/uploads/2019/05/logo-vector-bizum.jpg",
-    beautyName: "Bizum"
-  },
-  {
-    name: "JUST-EAT",
-    uri:
-      "https://d2egcvq7li5bpq.cloudfront.net/all/frontend/just-eat-logo-facebook-v3.png",
-    beautyName: "JUST EAT"
-  },
-  {
-    name: "LIDL",
-    uri: "http://www.mendips.net/uploads/Proyectos/Lidl/Logo_LIDL_JPEG.jpg",
-    beautyName: "Lidl"
-  },
-  {
-    name: "YOIGO",
-    uri:
-      "https://www.phonehouse.es/img/logos/logos-operadores-circulo-yoigo.png",
-    beautyName: "Yoigo"
-  },
-  {
-    name: "PAYPAL",
-    uri:
-      "https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg",
-    beautyName: "Paypal"
-  },
-  {
-    name: "PayPal",
-    uri:
-      "https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg",
-    beautyName: "PayPal"
-  },
-  {
-    name: "NOMINA",
-    uri:
-      "http://sageone-spain-wordpress.s3.amazonaws.com/images/Agosto2014/nominas-o-facturas-como-cobro-de-mi-empresa.jpg",
-    beautyName: "Nómina"
-  },
-  {
-    name: "TRANSF.",
-    uri:
-      "http://revistalatribuna.com/wp-content/uploads/2018/10/transferencia.jpg",
-    beautyName: "Transferencia"
-  },
-  {
-    name: "COMERCIO",
-    uri:
-      "https://png.pngtree.com/png_detail/18/09/10/pngtree-red-shopping-cart-png-clipart_739601.jpg",
-    beautyName: "Compras en comercios"
-  }
-];
+import namesResolver from '../entities.json';
 
 export interface IMovement {
   id: string;
@@ -112,7 +28,7 @@ interface MovementProps {
 
 function resolveTransactionEntity(st: string) {
   for (let name of namesResolver) {
-    if (st.includes(name.name)) {
+    if (st.match(name.name)) {
       return name;
     }
   }
