@@ -24,6 +24,9 @@ export default class MovementsScreen extends React.PureComponent<
     const movements = navigation.getParam("movements", undefined);
     const dateRange = navigation.getParam("dateRange", undefined);
 
+    
+    console.log("dateRange", dateRange)
+
     if (balance && movements && dateRange) {
       return (
         <FlatList<IMovement>

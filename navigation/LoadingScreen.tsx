@@ -255,7 +255,8 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
                   routeName: "Loaded",
                   params: {
                     balance: balance,
-                    movements: filtered
+                    movements: filtered, 
+                    dateRange: {from: mostImportant.date, to: today }
                   }
                 })
               ]
