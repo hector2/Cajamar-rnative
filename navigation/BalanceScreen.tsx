@@ -13,8 +13,9 @@ export default class BalanceScreen extends React.PureComponent {
     const { navigation } = this.props;
     const balance = navigation.getParam("balance", undefined);
     const movements = navigation.getParam("movements", undefined);
+    const dateRange = navigation.getParam("dateRange", undefined);
 
-    if (balance && movements) {
+    if (balance && movements && dateRange) {
       return (<Balance balance={balance} />)
     }
   }
