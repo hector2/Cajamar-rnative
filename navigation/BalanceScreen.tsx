@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-native";
+import { Button, View } from "react-native";
 import Balance from "../components/Balance";
 
 export default class BalanceScreen extends React.PureComponent {
@@ -15,10 +15,10 @@ export default class BalanceScreen extends React.PureComponent {
     const movements = navigation.getParam("movements", undefined);
     const dateRange = navigation.getParam("dateRange", undefined);
 
-    console.log("dateRange", dateRange)
+    console.log("dateRange", dateRange);
 
     if (balance && movements && dateRange) {
-      return (<Balance balance={balance} />)
+      return <Balance balance={balance} />;
     }
   }
 }

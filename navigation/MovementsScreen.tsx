@@ -1,21 +1,50 @@
 import React from "react";
-import { FlatList } from "react-native";
+
+import {
+  FlatList,
+  Modal,
+  Text,
+  TouchableHighlight,
+  View,
+  Alert
+} from "react-native";
 import Movement, { IMovement } from "../components/Movement";
 import { GLOBAL, DemoState } from "../Global";
+import Dates from "react-native-dates";
+import { isBefore } from "date-fns";
+import { Button } from "react-native-paper";
 
-export default class MovementsScreen extends React.PureComponent<
-  {},
-  DemoState
-> {
+import Calendar from "react-native-calendar-select";
+import DateRangePicker from "../components/DateRangePicker";
+
+interface IState {
+  demo: boolean;
+  modalVisible: boolean;
+}
+
+export default class MovementsScreen extends React.PureComponent<{}, IState> {
   static navigationOptions = {
     title: "Movimientos"
   };
+
   constructor(props) {
     super(props);
-    this.state = { demo: false };
+    this.state = { demo: false, modalVisible: false };
   }
 
   async componentDidMount() {}
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
+
+  onRangePicked(from: Date, to: Date) {
+    console.log("picked");
+    console.log("this aqui", this);
+    console.log("from", from);
+    console.log("to", to);
+    this.setState({ modalVisible: false });
+  }
 
   render() {
     GLOBAL.MovementsState = this;
@@ -24,19 +53,36 @@ export default class MovementsScreen extends React.PureComponent<
     const movements = navigation.getParam("movements", undefined);
     const dateRange = navigation.getParam("dateRange", undefined);
 
-    
-    console.log("dateRange", dateRange)
+    console.log("dateRange", dateRange);
 
     if (balance && movements && dateRange) {
       return (
-        <FlatList<IMovement>
-          data={movements}
-          extraData={this.state.demo}
-          renderItem={({ item }) => {
-            return <Movement mov={item} demo={this.state.demo} />;
-          }}
-          keyExtractor={({ id }, index) => id}
-        />
+        <View style={{ flex: 1 }}>
+          <DateRangePicker
+            from={dateRange.from}
+            to={dateRange.to}
+            visible={this.state.modalVisible}
+            onRangePicked={this.onRangePicked.bind(this)}
+          ></DateRangePicker>
+
+          <TouchableHighlight
+            onPress={() => {
+              this.setModalVisible(true);
+            }}
+          >
+            <Text>Show Modal</Text>
+          </TouchableHighlight>
+
+          <FlatList<IMovement>
+            data={movements}
+            extraData={this.state.demo}
+            style={{ flex: 3 }}
+            renderItem={({ item }) => {
+              return <Movement mov={item} demo={this.state.demo} />;
+            }}
+            keyExtractor={({ id }, index) => id}
+          />
+        </View>
       );
     }
   }
