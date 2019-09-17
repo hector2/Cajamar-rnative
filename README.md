@@ -1,8 +1,6 @@
 # Cajamar-rnative
 
 TO-DO
-
-- [ ] Ajustar fechadesde y fechaHasta.
 - [ ] Ajustes para poder cambiar lo de modo demo o no.
 - [ ] Que si falle login se cuente los fallos y se bloquee los intentos para que no bloquee su cuenta de cajamar.
 - [ ] AWS Amplify para mejora de integracion con AWS.
@@ -15,5 +13,7 @@ TO-DO
 - [ ] Que en el login se le pueda dar a siguientte y haga focus al siguiente input -> https://stackoverflow.com/a/57352518
 - [ ] Que el boton de login salga desactivado si no se escribe user y pass
 - [ ] Mejorar modal picker https://github.com/react-native-community/react-native-modal
+- [ ] No me gusta la forma de recargar los movimientos a la hora de cambiar la fecha, ya que esta muy acoplado a loadingscreen.
+- [ ] Las interfaces deberian ir en otro sitio, no en los componentes UI.
 
 Tutorial molón: https://blog.risingstack.com/a-definitive-react-native-guide-for-react-developers/?utm_source=RisingStack+Blog&utm_campaign=616af8b1f8-react-native-animation-sound&utm_medium=email&utm_term=0_02a6a69990-616af8b1f8-475085905

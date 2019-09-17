@@ -11,11 +11,13 @@ import {
 import Movement, { IMovement } from "../components/Movement";
 import { GLOBAL, DemoState } from "../Global";
 import Dates from "react-native-dates";
-import { isBefore } from "date-fns";
+import { isBefore, isAfter, isSameDay } from "date-fns";
 import { Button } from "react-native-paper";
 
 import Calendar from "react-native-calendar-select";
 import DateRangePicker from "../components/DateRangePicker";
+import { StackActions, NavigationActions } from "react-navigation";
+import { calculateBalance, getStoredMovements } from "../BankLogic";
 
 interface IState {
   demo: boolean;
@@ -40,10 +42,35 @@ export default class MovementsScreen extends React.PureComponent<{}, IState> {
 
   onRangePicked(from: Date, to: Date) {
     console.log("picked");
-    console.log("this aqui", this);
     console.log("from", from);
     console.log("to", to);
-    this.setState({ modalVisible: false });
+    this.setState({ modalVisible: false }, async () => {
+      console.log("GET ITEMS FROM OFFLINE CACHE");
+      let offlineMovs = await getStoredMovements();
+
+      offlineMovs = offlineMovs.filter(
+        x =>
+          (isAfter(x.date, from) || isSameDay(x.date, from)) &&
+          (isBefore(x.date, to) || isSameDay(x.date, to))
+      );
+
+      const balance = calculateBalance(offlineMovs, from, to);
+
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({
+            routeName: "Loaded",
+            params: {
+              balance: balance,
+              movements: offlineMovs,
+              dateRange: { from: from, to: to }
+            }
+          })
+        ]
+      });
+      this.props.navigation.dispatch(resetAction);
+    });
   }
 
   render() {

@@ -26,16 +26,26 @@ class DateRangePicker extends React.PureComponent<
     super(props);
 
     this.state = {
-      focus: "startDate",
+      focus: "endDate",
       startDate: this.props.from,
       endDate: this.props.to
     };
   }
 
-  //isDateBlocked = (date: string | number | Date) => isBefore(new Date(), date);
+  finishPick = () => {
+    if (
+      this.state.startDate &&
+      this.state.endDate &&
+      isBefore(this.state.startDate, this.state.endDate)
+    ) {
+      this.props.onRangePicked(this.state.startDate, this.state.endDate);
+    } else {
+      this.props.onRangePicked(this.props.from, this.props.to);
+    }
+  };
 
   render() {
-    const isDateBlocked = date => date.isBefore(moment(), "day");
+    const isDateBlocked = date => !date.isBefore(moment(), "day");
 
     const onDatesChange = ({ startDate, endDate, focusedInput }) => {
       if (moment.isMoment(startDate) || moment.isMoment(endDate)) {
@@ -46,7 +56,12 @@ class DateRangePicker extends React.PureComponent<
           ? endDate.toDate()
           : this.state.endDate;
 
-        console.log("ondateschange", dateStart, dateEnd, focusedInput);
+        console.log("ONDATESCHANGE");
+        console.log("dateStart", dateStart.toString());
+        console.log("dateEnd", dateEnd.toString());
+        console.log("focusedInput", focusedInput);
+        console.log("-------------------------------------------");
+
         this.setState({ ...this.state, focus: focusedInput }, () =>
           this.setState({
             startDate: dateStart,
@@ -61,9 +76,7 @@ class DateRangePicker extends React.PureComponent<
         animationType="fade"
         transparent={false}
         visible={this.props.visible}
-        onRequestClose={() => {
-          this.props.onRangePicked(this.state.startDate, this.state.endDate);
-        }}
+        onRequestClose={this.finishPick}
       >
         <View style={{ flex: 1 }}>
           <View>
@@ -73,18 +86,11 @@ class DateRangePicker extends React.PureComponent<
               startDate={this.state.startDate}
               endDate={this.state.endDate}
               focusedInput={this.state.focus}
-              focusedMonth={moment("05/09/2030", "DD/MM/YYYY")}
+              focusedMonth={moment(this.state.endDate)}
               range
             />
 
-            <TouchableHighlight
-              onPress={() => {
-                this.props.onRangePicked(
-                  this.state.startDate,
-                  this.state.endDate
-                );
-              }}
-            >
+            <TouchableHighlight onPress={this.finishPick}>
               <Text>Hide Modal</Text>
             </TouchableHighlight>
           </View>
