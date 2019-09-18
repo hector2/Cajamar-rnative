@@ -8,7 +8,6 @@ import moment from "moment";
 interface DateRangePickerProps {
   from: Date;
   to: Date;
-  visible: boolean;
   onRangePicked: (from: Date, to: Date) => void;
 }
 
@@ -16,6 +15,7 @@ interface DateRangePickerState {
   startDate: Date;
   endDate: Date;
   focus: string;
+  modalVisible: boolean;
 }
 
 class DateRangePicker extends React.PureComponent<
@@ -28,21 +28,28 @@ class DateRangePicker extends React.PureComponent<
     this.state = {
       focus: "endDate",
       startDate: this.props.from,
-      endDate: this.props.to
+      endDate: this.props.to,
+      modalVisible: false
     };
   }
 
   finishPick = () => {
-    if (
-      this.state.startDate &&
-      this.state.endDate &&
-      isBefore(this.state.startDate, this.state.endDate)
-    ) {
-      this.props.onRangePicked(this.state.startDate, this.state.endDate);
-    } else {
-      this.props.onRangePicked(this.props.from, this.props.to);
-    }
+    this.setState({ modalVisible: false }, () => {
+      if (
+        this.state.startDate &&
+        this.state.endDate &&
+        isBefore(this.state.startDate, this.state.endDate)
+      ) {
+        this.props.onRangePicked(this.state.startDate, this.state.endDate);
+      } else {
+        this.props.onRangePicked(this.props.from, this.props.to);
+      }
+    });
   };
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
 
   render() {
     const isDateBlocked = date => !date.isBefore(moment(), "day");
@@ -72,30 +79,40 @@ class DateRangePicker extends React.PureComponent<
     };
 
     return (
-      <Modal
-        animationType="fade"
-        transparent={false}
-        visible={this.props.visible}
-        onRequestClose={this.finishPick}
-      >
-        <View style={{ flex: 1 }}>
-          <View>
-            <Dates
-              onDatesChange={onDatesChange}
-              isDateBlocked={isDateBlocked}
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              focusedInput={this.state.focus}
-              focusedMonth={moment(this.state.endDate)}
-              range
-            />
+      <View>
+        <Modal
+          animationType="fade"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={this.finishPick}
+        >
+          <View style={{ flex: 1 }}>
+            <View>
+              <Dates
+                onDatesChange={onDatesChange}
+                isDateBlocked={isDateBlocked}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                focusedInput={this.state.focus}
+                focusedMonth={moment(this.state.endDate)}
+                range
+              />
 
-            <TouchableHighlight onPress={this.finishPick}>
-              <Text>Hide Modal</Text>
-            </TouchableHighlight>
+              <TouchableHighlight onPress={this.finishPick}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+
+        <TouchableHighlight
+          onPress={() => {
+            this.setModalVisible(true);
+          }}
+        >
+          <Text>Show Modal</Text>
+        </TouchableHighlight>
+      </View>
     );
   }
 }

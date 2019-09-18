@@ -21,7 +21,6 @@ import { calculateBalance, getStoredMovements } from "../BankLogic";
 
 interface IState {
   demo: boolean;
-  modalVisible: boolean;
 }
 
 export default class MovementsScreen extends React.PureComponent<{}, IState> {
@@ -31,46 +30,41 @@ export default class MovementsScreen extends React.PureComponent<{}, IState> {
 
   constructor(props) {
     super(props);
-    this.state = { demo: false, modalVisible: false };
+    this.state = { demo: false };
   }
 
   async componentDidMount() {}
 
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
-
-  onRangePicked(from: Date, to: Date) {
+  async onRangePicked(from: Date, to: Date) {
     console.log("picked");
     console.log("from", from);
     console.log("to", to);
-    this.setState({ modalVisible: false }, async () => {
-      console.log("GET ITEMS FROM OFFLINE CACHE");
-      let offlineMovs = await getStoredMovements();
 
-      offlineMovs = offlineMovs.filter(
-        x =>
-          (isAfter(x.date, from) || isSameDay(x.date, from)) &&
-          (isBefore(x.date, to) || isSameDay(x.date, to))
-      );
+    console.log("GET ITEMS FROM OFFLINE CACHE");
+    let offlineMovs = await getStoredMovements();
 
-      const balance = calculateBalance(offlineMovs, from, to);
+    offlineMovs = offlineMovs.filter(
+      x =>
+        (isAfter(x.date, from) || isSameDay(x.date, from)) &&
+        (isBefore(x.date, to) || isSameDay(x.date, to))
+    );
 
-      const resetAction = StackActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({
-            routeName: "Loaded",
-            params: {
-              balance: balance,
-              movements: offlineMovs,
-              dateRange: { from: from, to: to }
-            }
-          })
-        ]
-      });
-      this.props.navigation.dispatch(resetAction);
+    const balance = calculateBalance(offlineMovs, from, to);
+
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: "Loaded",
+          params: {
+            balance: balance,
+            movements: offlineMovs,
+            dateRange: { from: from, to: to }
+          }
+        })
+      ]
     });
+    this.props.navigation.dispatch(resetAction);
   }
 
   render() {
@@ -88,17 +82,8 @@ export default class MovementsScreen extends React.PureComponent<{}, IState> {
           <DateRangePicker
             from={dateRange.from}
             to={dateRange.to}
-            visible={this.state.modalVisible}
             onRangePicked={this.onRangePicked.bind(this)}
           ></DateRangePicker>
-
-          <TouchableHighlight
-            onPress={() => {
-              this.setModalVisible(true);
-            }}
-          >
-            <Text>Show Modal</Text>
-          </TouchableHighlight>
 
           <FlatList<IMovement>
             data={movements}
