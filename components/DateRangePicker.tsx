@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Alert, View, TouchableHighlight, Text } from "react-native";
+import { Modal, View, TouchableHighlight, Text } from "react-native";
 import Dates from "react-native-dates";
 import { isBefore } from "date-fns";
 import { withTheme } from "react-native-paper";

@@ -63,7 +63,7 @@ class Balance extends React.PureComponent<BalanceProps, DemoState> {
     ).toFixed(2);
 
     return (
-      <ScrollView
+      <View
         contentContainerStyle={{
           paddingVertical: 10,
           paddingHorizontal: 10
@@ -151,7 +151,7 @@ class Balance extends React.PureComponent<BalanceProps, DemoState> {
         </Surface>
 
         <ResultadoBalance ahorro={porcentajeAhorro} />
-      </ScrollView>
+      </View>
     );
   }
 }

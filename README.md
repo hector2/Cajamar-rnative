@@ -15,5 +15,6 @@ TO-DO
 - [ ] Mejorar modal picker https://github.com/react-native-community/react-native-modal
 - [ ] No me gusta la forma de recargar los movimientos a la hora de cambiar la fecha, ya que esta muy acoplado a loadingscreen.
 - [ ] Las interfaces deberian ir en otro sitio, no en los componentes UI.
+- [ ] BankLogic sobrecargado de responsabilidades.
 
 Tutorial molón: https://blog.risingstack.com/a-definitive-react-native-guide-for-react-developers/?utm_source=RisingStack+Blog&utm_campaign=616af8b1f8-react-native-animation-sound&utm_medium=email&utm_term=0_02a6a69990-616af8b1f8-475085905

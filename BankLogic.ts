@@ -1,8 +1,9 @@
 import { IMovement } from "./components/Movement";
-import { isBefore } from "date-fns";
+import { isBefore, isAfter, isSameDay } from "date-fns";
 import { IBalance } from "./components/Balance";
 import { UNAUTHORIZED, INTERNAL_ERROR, UPDATED_KEY } from "./Constants";
 import AsyncStorage from "@react-native-community/async-storage";
+import { StackActions, NavigationActions } from "react-navigation";
 
 export function getImportantMovements(coll: IMovement[]) {
   let masBeneficiosos = coll
@@ -40,7 +41,11 @@ export function getImportantMovements(coll: IMovement[]) {
   }
 }
 
-export function calculateBalance(coll: IMovement[], from: Date, to: Date): IBalance {
+export function calculateBalance(
+  coll: IMovement[],
+  from: Date,
+  to: Date
+): IBalance {
   let positivo = 0.0;
   let negativo = 0.0;
 
@@ -64,11 +69,14 @@ export function calculateBalance(coll: IMovement[], from: Date, to: Date): IBala
   };
 }
 
-export function filterMovementsRange(mostImportant: IMovement, movements: IMovement[]) {
-    let index = movements.indexOf(mostImportant);
-    if (index < movements.length - 1 && index !== -1) {
-        movements = movements.slice(0, index + 1);
-    }
+export function filterMovementsRange(
+  mostImportant: IMovement,
+  movements: IMovement[]
+) {
+  let index = movements.indexOf(mostImportant);
+  if (index < movements.length - 1 && index !== -1) {
+    movements = movements.slice(0, index + 1);
+  }
 }
 
 export async function getFreshMovements(
@@ -126,37 +134,74 @@ export async function getFreshMovements(
   return movements;
 }
 
-
 export async function getStoredMovements() {
-    let movements: IMovement[] = []
-    let movKeys = await AsyncStorage.getAllKeys()
-    movKeys = movKeys.filter((v) => v !== UPDATED_KEY)
-  
-    console.log("claves", movKeys)
-  
-    let keyvalues = await AsyncStorage.multiGet(movKeys)
-  
-    console.log("keyvalues", keyvalues)
-  
-    keyvalues.map((v) => v[1]).forEach((v) => {
-      let parsed = JSON.parse(v)
-  
-      console.log("compare parsed and final", parsed.date, new Date(parsed.date))
-  
+  let movements: IMovement[] = [];
+  let movKeys = await AsyncStorage.getAllKeys();
+  movKeys = movKeys.filter(v => v !== UPDATED_KEY);
+
+  console.log("claves", movKeys);
+
+  let keyvalues = await AsyncStorage.multiGet(movKeys);
+
+  console.log("keyvalues", keyvalues);
+
+  keyvalues
+    .map(v => v[1])
+    .forEach(v => {
+      let parsed = JSON.parse(v);
+
+      console.log(
+        "compare parsed and final",
+        parsed.date,
+        new Date(parsed.date)
+      );
+
       let mov: IMovement = {
         id: parsed.id,
         date: new Date(parsed.date),
         concept: parsed.concept,
         amount: parsed.amount
-      }
-      movements.push(mov)
-    })
-  
-    console.log("movements offline", movements)
-  
-    movements = movements.sort((a, b) => b.date.getTime() - a.date.getTime())
-  
-    console.log("movements sorted", movements)
-  
-    return movements
-  }
+      };
+      movements.push(mov);
+    });
+
+  console.log("movements offline", movements);
+
+  movements = movements.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  console.log("movements sorted", movements);
+
+  return movements;
+}
+
+export async function onRangePicked(from: Date, to: Date) {
+  console.log("picked");
+  console.log("from", from);
+  console.log("to", to);
+
+  console.log("GET ITEMS FROM OFFLINE CACHE");
+  let offlineMovs = await getStoredMovements();
+
+  offlineMovs = offlineMovs.filter(
+    x =>
+      (isAfter(x.date, from) || isSameDay(x.date, from)) &&
+      (isBefore(x.date, to) || isSameDay(x.date, to))
+  );
+
+  const balance = calculateBalance(offlineMovs, from, to);
+
+  const resetAction = StackActions.reset({
+    index: 0,
+    actions: [
+      NavigationActions.navigate({
+        routeName: "Loaded",
+        params: {
+          balance: balance,
+          movements: offlineMovs,
+          dateRange: { from: from, to: to }
+        }
+      })
+    ]
+  });
+  this.props.navigation.dispatch(resetAction);
+}

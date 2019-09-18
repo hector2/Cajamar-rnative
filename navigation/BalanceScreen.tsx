@@ -1,6 +1,14 @@
 import React from "react";
-import { Button, View } from "react-native";
+import { Button, View, ScrollView } from "react-native";
 import Balance from "../components/Balance";
+import DateRangePicker from "../components/DateRangePicker";
+import {
+  getStoredMovements,
+  calculateBalance,
+  onRangePicked
+} from "../BankLogic";
+import { isAfter, isSameDay, isBefore } from "date-fns";
+import { StackActions, NavigationActions } from "react-navigation";
 
 export default class BalanceScreen extends React.PureComponent {
   constructor(props) {
@@ -18,7 +26,22 @@ export default class BalanceScreen extends React.PureComponent {
     console.log("dateRange", dateRange);
 
     if (balance && movements && dateRange) {
-      return <Balance balance={balance} />;
+      return (
+        <ScrollView
+          style={{
+            flex: 1,
+            flexDirection: "column"
+          }}
+        >
+          <DateRangePicker
+            from={dateRange.from}
+            to={dateRange.to}
+            onRangePicked={onRangePicked.bind(this)}
+          ></DateRangePicker>
+
+          <Balance balance={balance} />
+        </ScrollView>
+      );
     }
   }
 }
