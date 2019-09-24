@@ -13,7 +13,7 @@ const ThemeConstants = {
     primary: theme.primary,
     accent: "yellow"
   },
-  roundness: 30
+  roundness: 5
 };
 
 const AppCont = createAppContainer(AppNavigator);

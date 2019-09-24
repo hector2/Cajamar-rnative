@@ -1,9 +1,19 @@
 import React from "react";
 import { Appbar } from "react-native-paper";
 import { DrawerActions } from "react-navigation";
-import { toggleDemo } from "../Global";
+import { toggleDemo, GLOBAL, realOrDemoIcon } from "../Global";
 
-export default class CustomHeader extends React.Component {
+interface IState {
+  toggle: boolean;
+}
+
+export default class CustomHeader extends React.Component<{}, IState> {
+  constructor(props) {
+    super(props);
+
+    this.state = { toggle: false };
+  }
+
   _goBack = () => console.log("Went back");
 
   _onSearch = () => console.log("Searching");
@@ -11,6 +21,7 @@ export default class CustomHeader extends React.Component {
   _onMore = () => toggleDemo();
 
   render() {
+    GLOBAL.HeaderState = this;
     return (
       <Appbar.Header>
         <Appbar.Content
@@ -20,8 +31,7 @@ export default class CustomHeader extends React.Component {
           subtitleStyle={{ color: "white" }}
         />
         <Appbar.Action icon="search-web" onPress={this._onSearch} />
-        <Appbar.Action  icon="more" onPress={this._onMore} />
-
+        <Appbar.Action icon={realOrDemoIcon()} onPress={this._onMore} />
       </Appbar.Header>
     );
   }

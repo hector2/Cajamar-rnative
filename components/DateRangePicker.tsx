@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, View, TouchableHighlight, Text } from "react-native";
 import Dates from "react-native-dates";
-import { isBefore } from "date-fns";
+import { isBefore, format } from "date-fns";
 import { withTheme } from "react-native-paper";
 import moment from "moment";
 
@@ -110,7 +110,11 @@ class DateRangePicker extends React.PureComponent<
             this.setModalVisible(true);
           }}
         >
-          <Text>Show Modal</Text>
+          <Text style={{ textAlign: "center" }}>
+            {format(this.state.startDate, "DD/MM/YY") +
+              " - " +
+              format(this.state.endDate, "DD/MM/YY")}
+          </Text>
         </TouchableHighlight>
       </View>
     );
