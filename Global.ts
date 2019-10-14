@@ -26,9 +26,7 @@ export function toggleDemo() {
 }
 
 export function realOrDemo(inputString) {
-  return demo === true
-    ? Math.floor(Math.random() * 2000 + 1).toString()
-    : inputString;
+  return demo === true ? "***.**" : inputString;
 }
 
 export function realOrDemoIcon() {

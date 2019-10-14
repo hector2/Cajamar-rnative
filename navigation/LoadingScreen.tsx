@@ -6,20 +6,20 @@ import { View } from "react-native";
 import { ActivityIndicator, Text, Title } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
 
-import AsyncStorage from '@react-native-community/async-storage';
-import { UPDATED_KEY, EVICT_ITEMS_THRESHOLD, UNAUTHORIZED, INTERNAL_ERROR } from "../Constants";
-import { getFreshMovements, getImportantMovements, calculateBalance, filterMovementsRange, getStoredMovements } from "../BankLogic";
-
-
-
-
-
-
-
-
-
-
-
+import AsyncStorage from "@react-native-community/async-storage";
+import {
+  UPDATED_KEY,
+  EVICT_ITEMS_THRESHOLD,
+  UNAUTHORIZED,
+  INTERNAL_ERROR
+} from "../Constants";
+import {
+  getFreshMovements,
+  getImportantMovements,
+  calculateBalance,
+  filterMovementsRange,
+  getStoredMovements
+} from "../BankLogic";
 
 interface IState {
   isLoading: boolean;
@@ -46,51 +46,46 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
 
   async componentDidMount() {
     try {
-
       const { navigation } = this.props;
       const username = navigation.getParam("username", undefined);
       const password = navigation.getParam("password", undefined);
 
-      let fetchFromApi = false
+      let fetchFromApi = false;
 
       if (username && password) {
-        fetchFromApi = true
+        fetchFromApi = true;
       }
 
       let today = new Date();
       let since = subDays(today, 31);
 
-
       let filtered: IMovement[] = [];
 
-
-
       if (fetchFromApi) {
-        console.log("GET ITEMS FROM API")
-        await AsyncStorage.clear()
-        filtered = await getFreshMovements(since, username, password)
+        console.log("GET ITEMS FROM API");
+        await AsyncStorage.clear();
+        filtered = await getFreshMovements(since, username, password);
 
         let storageFriendly = filtered.map((value, index) => {
-          return [index.toString(), JSON.stringify(value)]
-        })
-        await AsyncStorage.multiSet(storageFriendly)
-        await AsyncStorage.setItem(UPDATED_KEY, JSON.stringify(today))
-
+          return [index.toString(), JSON.stringify(value)];
+        });
+        await AsyncStorage.multiSet(storageFriendly);
+        await AsyncStorage.setItem(UPDATED_KEY, JSON.stringify(today));
       } else {
-        console.log("GET ITEMS FROM OFFLINE CACHE")
-        filtered = await getStoredMovements()
+        console.log("GET ITEMS FROM OFFLINE CACHE");
+        filtered = await getStoredMovements();
       }
 
       let mostImportant = getImportantMovements(filtered);
 
       if (mostImportant) {
-        filterMovementsRange(mostImportant, filtered)
+        console.log("mostImportant", mostImportant);
 
-        const balance = calculateBalance(
-          filtered,
-          mostImportant.date,
-          today
-        );
+        filtered = filterMovementsRange(mostImportant, filtered);
+
+        console.log("filtered",filtered )
+
+        const balance = calculateBalance(filtered, mostImportant.date, today);
 
         this.setState(
           {
@@ -107,8 +102,8 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
                   routeName: "Loaded",
                   params: {
                     balance: balance,
-                    movements: filtered, 
-                    dateRange: {from: mostImportant.date, to: today }
+                    movements: filtered,
+                    dateRange: { from: mostImportant.date, to: today }
                   }
                 })
               ]
@@ -123,8 +118,8 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
       console.log(err);
 
       if (err === UNAUTHORIZED) {
-        this.props.navigation.state.params.onLoginFailed()
-        this.props.navigation.goBack()
+        this.props.navigation.state.params.onLoginFailed();
+        this.props.navigation.goBack();
       } else {
         if (!this.state.dataReceived) {
           const resetAction = StackActions.reset({
@@ -138,8 +133,6 @@ export default class LoadingScreen extends React.PureComponent<{}, IState> {
           this.props.navigation.dispatch(resetAction);
         }
       }
-
-
     } finally {
       //ws.close();
     }

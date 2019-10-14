@@ -1,5 +1,5 @@
 import { IMovement } from "./components/Movement";
-import { isBefore, isAfter, isSameDay } from "date-fns";
+import { isBefore, isAfter, isSameDay, isWithinRange } from "date-fns";
 import { IBalance } from "./components/Balance";
 import { UNAUTHORIZED, INTERNAL_ERROR, UPDATED_KEY } from "./Constants";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -50,6 +50,9 @@ export function calculateBalance(
   let negativo = 0.0;
 
   for (let mov of coll) {
+    if (!isWithinRange(mov.date, from, to)) {
+      continue;
+    }
     let value = mov.amount;
     if (value >= 0) {
       positivo += value;
@@ -77,6 +80,7 @@ export function filterMovementsRange(
   if (index < movements.length - 1 && index !== -1) {
     movements = movements.slice(0, index + 1);
   }
+  return movements
 }
 
 export async function getFreshMovements(
