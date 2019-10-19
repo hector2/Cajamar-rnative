@@ -1,5 +1,8 @@
 # Cajamar-rnative
 
+![](demo.gif)
+
+
 TO-DO
 - [ ] Que si falle login se cuente los fallos y se bloquee los intentos para que no bloquee su cuenta de cajamar.
 - [ ] AWS Amplify para mejora de integracion con AWS.
