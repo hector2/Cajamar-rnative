@@ -1,6 +1,6 @@
 # Cajamar-rnative
 
-![](ezgif-6-61d365b3c23e.gif)
+![](demo.gif)
 
 
 TO-DO
