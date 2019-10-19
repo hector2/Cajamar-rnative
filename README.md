@@ -1,5 +1,8 @@
 # Cajamar-rnative
 
+![](ezgif-6-61d365b3c23e.gif)
+
+
 TO-DO
 - [ ] Ajustes para poder cambiar lo de modo demo o no.
 - [ ] Que si falle login se cuente los fallos y se bloquee los intentos para que no bloquee su cuenta de cajamar.
