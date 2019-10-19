@@ -1,7 +1,6 @@
 # Cajamar-rnative
 
 TO-DO
-- [ ] Ajustes para poder cambiar lo de modo demo o no.
 - [ ] Que si falle login se cuente los fallos y se bloquee los intentos para que no bloquee su cuenta de cajamar.
 - [ ] AWS Amplify para mejora de integracion con AWS.
 - [ ] Mejora en la estructuración de código
@@ -16,5 +15,7 @@ TO-DO
 - [ ] No me gusta la forma de recargar los movimientos a la hora de cambiar la fecha, ya que esta muy acoplado a loadingscreen.
 - [ ] Las interfaces deberian ir en otro sitio, no en los componentes UI.
 - [ ] BankLogic sobrecargado de responsabilidades.
+- [ ] Añadir posibilidad de cambiar color a calendario.
+
 
 Tutorial molón: https://blog.risingstack.com/a-definitive-react-native-guide-for-react-developers/?utm_source=RisingStack+Blog&utm_campaign=616af8b1f8-react-native-animation-sound&utm_medium=email&utm_term=0_02a6a69990-616af8b1f8-475085905

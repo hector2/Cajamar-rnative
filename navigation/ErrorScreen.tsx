@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { View, Image, AsyncStorage } from "react-native";
 import { Title, withTheme, Button, Text } from "react-native-paper";
 import { StackActions, NavigationActions } from "react-navigation";
 const sadPiggy = require("../assets/bankrupt.png");
@@ -46,7 +46,8 @@ class ErrorScreen extends React.PureComponent<{}, {}> {
           icon="refresh"
           mode="contained"
           dark={true}
-          onPress={() => {
+          onPress={async () => {
+            await AsyncStorage.clear()
             const resetAction = StackActions.reset({
               index: 0,
               actions: [
