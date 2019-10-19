@@ -4,7 +4,7 @@ export let GLOBAL = {
   HeaderState: null
 };
 
-let demo = false;
+let demo = true;
 
 export interface DemoState {
   demo: boolean;

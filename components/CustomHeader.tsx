@@ -26,8 +26,7 @@ export default class CustomHeader extends React.Component<{}, IState> {
       <Appbar.Header>
         <Appbar.Content
           titleStyle={{ color: "white" }}
-          title="Title"
-          subtitle="Subtitle"
+          title="Cajamar App"
           subtitleStyle={{ color: "white" }}
         />
         <Appbar.Action icon="search-web" onPress={this._onSearch} />
